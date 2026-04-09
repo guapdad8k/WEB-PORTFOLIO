@@ -668,11 +668,17 @@
         <div class="email-modal-content">
             <span class="close-email" id="close-email">&times;</span>
             <h3>Send a Message</h3>
-            <form class="email-form">
-                <input type="email" placeholder="Your Email Address" required>
-                <input type="text" placeholder="Subject" required>
-                <textarea placeholder="Write your message here..." rows="5" required></textarea>
+            
+            <form class="email-form" id="contact-form">
+                <input type="email" id="sender-email" placeholder="Your Email Address" required>
+                <input type="text" id="email-subject" placeholder="Subject" required>
+                <textarea id="email-body" placeholder="Write your message here..." rows="5" required></textarea>
+                
                 <button type="submit">SEND MESSAGE</button>
+                
+                <div id="sent-message" style="display: none; color: #ffffff; text-align: center; font-weight: bold; margin-top: 10px; text-shadow: 0 0 10px rgba(255,255,255,0.5);">
+                    Sent!
+                </div>
             </form>
         </div>
     </div>
