@@ -28,7 +28,6 @@
             overflow-x: hidden;
         }
 
-        /* --- SEKCJA BOOMBOX (MUZYKA NFS) --- */
         .boombox {
             position: fixed;
             bottom: 40px;
@@ -213,7 +212,6 @@
             animation-delay: var(--delay);
         }
 
-        /* --- IKONY BOCZNE --- */
         .side-icon {
             position: fixed;
             top: 50%;
@@ -253,7 +251,6 @@
             }
         }
 
-        /* --- POPUP EMAIL --- */
         .email-modal {
             position: fixed;
             top: 0;
@@ -276,17 +273,18 @@
                 pointer-events: all;
             }
 
-        .email-modal-content {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            transform: scale(0.9);
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            position: relative;
+            .email-modal-content { 
+            background: rgba(255, 255, 255, 0.15); 
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+            padding: 40px; 
+            border-radius: 20px; 
+            width: 90%; 
+            max-width: 500px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
+            transform: scale(0.9); 
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+            position: relative; 
+        
         }
 
         .email-modal.active .email-modal-content {
@@ -359,7 +357,6 @@
                     background: #e2e8f0;
                 }
 
-        /* --- STYLY TEKSTÓW --- */
         .hero-spacer {
             min-height: 100vh;
             display: flex;
@@ -736,17 +733,14 @@
 
 
     <script>
-        // ==========================================
-        // 1. BOOMBOX (CROSSFADE SYSTEM)
-        // ==========================================
+
         const boombox = document.getElementById('boombox');
 
-        // Dwa odtwarzacze w HTML, na których będziemy "miksować"
         const audio1 = document.getElementById('bg-audio-1');
         const audio2 = document.getElementById('bg-audio-2');
 
-        let activeAudio = audio1;   // Ten, który gra teraz
-        let inactiveAudio = audio2; // Ten, który czeka w ukryciu
+        let activeAudio = audio1;   
+        let inactiveAudio = audio2; 
 
         const muteToggleBtn = document.getElementById('mute-toggle');
         const iconUnmuted = document.getElementById('icon-unmuted');
@@ -757,7 +751,6 @@
         let isCrossfading = false;
         let masterVolume = parseFloat(volumeSlider.value); // Domyślnie z suwaka (0.3)
 
-        // ==== TWOJA PLAYLISTA ====
         const playlist = [
             'A_Tribe_Called_Quest_-_1nce_Again_ft._Tammy_Lucas.mp3',
             'Black_Moon_-_Enta_Da_Stage.mp3',
@@ -770,14 +763,12 @@
 
         let currentTrackIndex = Math.floor(Math.random() * playlist.length);
 
-        // Aktualizacja nazwy w interfejsie
         function updateUI(trackUrl) {
             let fileName = trackUrl.split('/').pop().split('.')[0];
             let cleanName = fileName.replace(/_/g, ' ').replace(/-/g, '');
             document.getElementById('track-scroller').innerHTML = `<span>${cleanName}</span><span>${cleanName}</span>`;
         }
 
-        // Start pierwszego utworu
         function initPlayer() {
             activeAudio.src = playlist[currentTrackIndex];
             activeAudio.volume = isMuted ? 0 : masterVolume;
@@ -785,57 +776,47 @@
             activeAudio.play().catch(e => console.log("Czeka na start od użytkownika."));
         }
 
-        // --- SILNIK CROSSFADE ---
         function checkCrossfade(e) {
-            // Reagujemy tylko na aktualnie grający player
             if (e.target !== activeAudio) return;
             if (!activeAudio.duration || isCrossfading) return;
 
-            // Jeśli zostały mniej niż 3 sekundy do końca utworu -> Startujemy Crossfade!
             if (activeAudio.duration - activeAudio.currentTime <= 3.0) {
                 startCrossfade();
             }
         }
 
-        // Nasłuchiwanie upływu czasu na obu odtwarzaczach
         audio1.addEventListener('timeupdate', checkCrossfade);
         audio2.addEventListener('timeupdate', checkCrossfade);
 
         function startCrossfade() {
             isCrossfading = true;
 
-            // Losuj kolejny, upewniając się, że to nie ten sam numer
             let nextIndex;
             do { nextIndex = Math.floor(Math.random() * playlist.length); }
             while (nextIndex === currentTrackIndex);
             currentTrackIndex = nextIndex;
-
-            // Przygotowanie drugiego odtwarzacza
             inactiveAudio.src = playlist[currentTrackIndex];
             inactiveAudio.muted = isMuted;
-            inactiveAudio.volume = 0; // Wchodzi cichutko
+            inactiveAudio.volume = 0; 
             updateUI(playlist[currentTrackIndex]);
             inactiveAudio.play().catch(e => console.error("Błąd autoplay przy miksie", e));
 
-            // Płynne przenikanie (30 kroków po 100ms = 3 sekundy)
             let fadeSteps = 30;
             let step = 0;
 
             let fadeInterval = setInterval(() => {
                 step++;
-                let progress = step / fadeSteps; // wartość od 0.0 do 1.0
+                let progress = step / fadeSteps; 
 
                 if (!isMuted) {
-                    activeAudio.volume = masterVolume * (1 - progress); // Stary ścisza się
-                    inactiveAudio.volume = masterVolume * progress;     // Nowy głośnieje
+                    activeAudio.volume = masterVolume * (1 - progress); 
+                    inactiveAudio.volume = masterVolume * progress;     
                 }
 
                 if (step >= fadeSteps) {
                     clearInterval(fadeInterval);
-                    activeAudio.pause(); // Całkowicie wyłączamy stary
-                    activeAudio.volume = isMuted ? 0 : masterVolume; // Reset parametrów
-
-                    // Magiczna zamiana miejsc
+                    activeAudio.pause(); 
+                    activeAudio.volume = isMuted ? 0 : masterVolume; 
                     let temp = activeAudio;
                     activeAudio = inactiveAudio;
                     inactiveAudio = temp;
@@ -847,7 +828,7 @@
 
         initPlayer();
 
-        // --- INTERAKCJE BOOMBOXA ---
+        // boooooooombox
         setTimeout(() => { boombox.classList.add('collapsed'); }, 4000);
         boombox.addEventListener('mouseenter', () => boombox.classList.remove('collapsed'));
         boombox.addEventListener('mouseleave', () => boombox.classList.add('collapsed'));
@@ -856,7 +837,6 @@
             e.stopPropagation();
             isMuted = !isMuted;
 
-            // Synchronizujemy oba odtwarzacze z decyzją usera
             audio1.muted = isMuted;
             audio2.muted = isMuted;
 
@@ -867,7 +847,6 @@
                 iconUnmuted.style.display = 'block';
                 iconMuted.style.display = 'none';
 
-                // Jeśli odciskamy poza crossfadem, ustawiamy właściwą głośność
                 if (!isCrossfading) activeAudio.volume = masterVolume;
                 activeAudio.play().catch(err => console.error("Przeglądarka nadal blokuje dźwięk:", err));
             }
@@ -875,18 +854,12 @@
 
         volumeSlider.addEventListener('input', (e) => {
             masterVolume = parseFloat(e.target.value);
-            // Zmieniamy głośność w locie, o ile właśnie nie miksuje (żeby nie przerwać efektu)
             if (!isCrossfading && !isMuted) {
                 activeAudio.volume = masterVolume;
             }
         });
 
 
-        // ==========================================
-        // 2. POZOSTAŁE FUNKCJE STRONY
-        // ==========================================
-
-        // Animacje na Scroll (Radar)
         const animatedElements = document.querySelectorAll('.card, .scroll-text, .mosaic-item');
         const observerOptions = { root: null, rootMargin: "0px 0px 0px 0px", threshold: 0 };
         const observer = new IntersectionObserver((entries) => {
@@ -897,7 +870,6 @@
         }, observerOptions);
         animatedElements.forEach(el => observer.observe(el));
 
-        // Lightbox (Powiększanie zdjęć)
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const galleryImages = document.querySelectorAll('.mosaic-item img');
@@ -912,15 +884,35 @@
             if (e.target !== lightboxImg) { lightbox.classList.remove('active'); }
         });
 
-        // Formularz Email (Popup)
         const emailModal = document.getElementById('email-modal');
         const openEmailBtn = document.getElementById('open-email-btn');
         const closeEmailBtn = document.getElementById('close-email');
-
+        const contactForm = document.getElementById('contact-form');
+        const sentMessage = document.getElementById('sent-message');
         openEmailBtn.addEventListener('click', () => emailModal.classList.add('active'));
         closeEmailBtn.addEventListener('click', () => emailModal.classList.remove('active'));
         emailModal.addEventListener('click', (e) => {
             if (e.target === emailModal) { emailModal.classList.remove('active'); }
+        });
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+
+            const email = document.getElementById('sender-email').value;
+            const subject = document.getElementById('email-subject').value;
+            const body = document.getElementById('email-body').value;
+            const mailtoLink = `mailto:jmtentertainment777@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body + "%0D%0A%0D%0A---%0D%0AOd: " + email)}`;
+
+            window.location.href = mailtoLink;
+
+            sentMessage.style.display = 'block';
+
+            setTimeout(() => {
+                sentMessage.style.display = 'none';
+                contactForm.reset();
+                emailModal.classList.remove('active');
+            }, 3000);
+        });
         });
     </script>
 </body>
