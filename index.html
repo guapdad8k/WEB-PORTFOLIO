@@ -13,7 +13,6 @@
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
     <style>
-        /* --- IMPORT TWOJEJ CZCIONKI --- */
         @font-face {
             font-family: 'Blazed';
             src: url('Blazed.ttf') format('truetype');
@@ -192,7 +191,6 @@
             animation-delay: var(--delay);
         }
 
-        /* --- NOWE ROZWIJANE MENU INSTAGRAM --- */
         .ig-container {
             position: fixed;
             top: 50%;
@@ -253,7 +251,6 @@
             color: #d1d5db;
         }
 
-        /* Ikonka Email po prawej */
         .side-icon.icon-right {
             position: fixed;
             top: 50%;
@@ -278,7 +275,6 @@
             .ig-container, .side-icon.icon-right { display: none; }
         }
 
-        /* --- POPUP EMAIL --- */
         .email-modal {
             position: fixed;
             top: 0; left: 0;
@@ -428,7 +424,6 @@
         .lightbox-close { position: absolute; top: 30px; right: 40px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; opacity: 0.6; transition: opacity 0.3s; }
         .lightbox-close:hover { opacity: 1; }
 
-        /* --- STYL PODPISU JAY BLAZE --- */
         .footer-signature {
             text-align: center;
             font-family: 'Blazed', sans-serif;
@@ -437,6 +432,45 @@
             padding: 180px 0 20px 0;
             text-shadow: 0 0 15px rgba(255,255,255,0.5);
             letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            
+            .txt-title { font-size: 2.8rem; }
+            .txt-link { font-size: 1.5rem; }
+            .txt-link-sub { font-size: 1.2rem; }
+            .txt-arrow { font-size: 2rem; }
+            .card-content h2 { font-size: 1.8rem; }
+            .card-content p { font-size: 1rem; }
+
+            .cards-container { gap: 15vh; padding: 5vh 10px 10vh 10px; }
+            .card { height: 65vh; border-radius: 20px; }
+            
+            .card:nth-child(1) { top: 5vh; }
+            .card:nth-child(2) { top: 7vh; }
+            .card:nth-child(3) { top: 9vh; }
+            .card:nth-child(4) { top: 11vh; }
+            .card:nth-child(5) { top: 13vh; }
+            .card:nth-child(6) { top: 15vh; }
+
+            .chassis-grid { gap: 30px; }
+            .chassis-gif { width: 240px; height: 150px; }
+
+            .boombox { min-width: 200px; padding: 10px 15px 10px 10px; bottom: 20px; }
+            .track-wrapper { width: 100px; }
+            .track-info { font-size: 0.8rem; }
+            
+            .email-modal-content { width: 95%; padding: 25px; }
+            .email-form input, .email-form textarea { padding: 12px; }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            
+            .hero-spacer { min-height: 120vh; } 
+            .card { height: 85vh; } 
+            
+            .boombox { bottom: 10px; padding: 5px 10px; }
+            .v-eq { height: 15px; }
         }
 
     </style>
