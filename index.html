@@ -20,10 +20,9 @@
             color: #1a1a1a;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
-            background-color: #000; /* Zapasowe tło zanim wczyta się GIF */
+            background-color: #000; 
         }
 
-        /* Tło przyklejone do ekranu (działa też na iPhone/Safari) */
         body::before {
             content: '';
             position: fixed;
@@ -38,7 +37,6 @@
             z-index: -10;
         }
 
-        /* --- BOOMBOX --- */
         .boombox {
             position: fixed; bottom: 40px; left: 0; background: transparent; padding: 15px 20px 15px 15px;
             z-index: 5000; transform: translateX(0); transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -72,13 +70,11 @@
         @keyframes h-bounce { 0% { width: 4px; } 100% { width: 10px; box-shadow: 0 0 8px rgba(255,255,255,0.8); } }
         .h-bar { height: 3px; background: #ffffff; border-radius: 2px; animation: h-bounce 0.6s infinite alternate; animation-delay: var(--delay); }
 
-        /* --- SIDE ICONS --- */
         .side-icon { position: fixed; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; z-index: 100; color: #ffffff; cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), filter 0.3s ease; opacity: 0.7; }
         .side-icon svg { width: 100%; height: 100%; fill: currentColor; }
         .side-icon:hover { transform: translateY(-50%) scale(1.2); opacity: 1; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8)); }
         .icon-left { left: 40px; } .icon-right { right: 40px; }
 
-        /* --- POPUP EMAIL --- */
         .email-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .email-modal.active { opacity: 1; pointer-events: all; }
         .email-modal-content { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); padding: 40px; border-radius: 20px; width: 90%; max-width: 500px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: relative; }
@@ -93,7 +89,6 @@
         .email-form button { background: #ffffff; color: #000000; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: transform 0.3s ease, background 0.3s ease; }
         .email-form button:hover { transform: translateY(-2px); background: #e2e8f0; }
 
-        /* --- HERO & SCROLL TEXTS --- */
         .hero-spacer { min-height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; gap: 25px; padding: 50px 0; font-family: 'Roboto', sans-serif; }
         .scroll-text { color: #ffffff; text-decoration: none; font-weight: 900; letter-spacing: 2px; margin: 0; opacity: 0.4; transform: scale(0.85); transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, text-shadow 0.3s ease; will-change: transform, opacity; display: inline-block; }
         .scroll-text.active { opacity: 1; transform: scale(1); }
@@ -101,27 +96,17 @@
         .txt-link { font-size: 2rem; } .txt-link-sub { font-size: 1.5rem; color: #e2e8f0; margin-bottom: 20px; font-weight: 700; }
         .txt-title { font-size: 4.5rem; text-transform: uppercase; } .txt-arrow { font-size: 3rem; margin-top: 10px; }
 
-        /* --- GARAŻ (SELECT CHASSIS) --- */
-        .chassis-section { display: flex; flex-direction: column; align-items: center; padding: 5vh 20px 10vh 20px; font-family: 'Roboto', sans-serif; gap: 80px; }
-        .chassis-grid { display: flex; gap: 60px; justify-content: center; flex-wrap: wrap; max-width: 1100px; }
-        .chassis-card { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #ffffff; cursor: pointer; opacity: 0; transform: translateY(50px) scale(0.9); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
-        .chassis-card.active { opacity: 1; transform: translateY(0) scale(1); }
-        .chassis-gif { width: 280px; height: 180px; background: transparent; border: none; display: flex; justify-content: center; align-items: center; overflow: hidden; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease; }
-        .chassis-gif img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-        .chassis-card:hover .chassis-gif { transform: translateY(-15px); filter: drop-shadow(0 0 20px rgba(255,255,255,0.7)); }
-        .chassis-card:hover .chassis-gif img { transform: scale(1.15); }
-
-        /* --- KARTY 3D --- */
         .cards-container { padding: 10vh 20px 10vh 20px; display: flex; flex-direction: column; align-items: center; gap: 20vh; }
         .card { width: 90%; max-width: 1100px; height: 75vh; position: sticky; background: #ffffff; box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 30px; overflow: hidden; opacity: 0; transform: translateY(100px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
         .card.active { opacity: 1; transform: translateY(0); }
         .card:nth-child(1) { top: 10vh; z-index: 10; } .card:nth-child(2) { top: 13vh; z-index: 20; } .card:nth-child(3) { top: 16vh; z-index: 30; } .card:nth-child(4) { top: 19vh; z-index: 40; } .card:nth-child(5) { top: 22vh; z-index: 50; } .card:nth-child(6) { top: 25vh; z-index: 60; }
-        model-viewer { width: 100%; height: 100%; background-color: transparent; outline: none; --poster-color: transparent; touch-action: pan-y; }
+
+        model-viewer { width: 100%; height: 100%; background-color: transparent; outline: none; --poster-color: transparent; touch-action: none; }
+        
         .card-content { position: absolute; top: 40px; left: 50px; z-index: 10; pointer-events: none; font-family: 'Roboto', sans-serif;}
         .card-content h2 { font-size: 3rem; margin: 0; color: #111827; font-weight: 900; text-shadow: 0 2px 10px rgba(255,255,255,0.8); }
         .card-content p { color: #4b5563; font-size: 1.2rem; font-weight: 700; }
         
-        /* --- GALERIA --- */
         .gallery-section { display: flex; flex-direction: column; align-items: center; padding: 10vh 20px 20vh 20px; font-family: 'Roboto', sans-serif;}
         .mosaic-container { width: 90%; max-width: 1100px; margin-top: 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
         .mosaic-item { position: relative; aspect-ratio: 1 / 1; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; opacity: 0; transform: translateY(60px) scale(0.9); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
@@ -130,7 +115,6 @@
         .mosaic-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
         .mosaic-item:hover img { transform: scale(1.1); }
         
-        /* --- LIGHTBOX --- */
         .lightbox { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .lightbox.active { opacity: 1; pointer-events: all; }
         .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
@@ -138,9 +122,6 @@
         .lightbox-close { position: absolute; top: 30px; right: 40px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; opacity: 0.6; transition: opacity 0.3s; }
         .lightbox-close:hover { opacity: 1; }
 
-        /* ======================================================= */
-        /* --- RWD: TELEFONY I MAŁE TABLETY (PONIŻEJ 768px) --- */
-        /* ======================================================= */
         @media (max-width: 768px) {
             .txt-title { font-size: 2.8rem; }
             .txt-link { font-size: 1.5rem; }
@@ -154,9 +135,6 @@
             .card:nth-child(1) { top: 5vh; } .card:nth-child(2) { top: 7vh; } .card:nth-child(3) { top: 9vh; }
             .card:nth-child(4) { top: 11vh; } .card:nth-child(5) { top: 13vh; } .card:nth-child(6) { top: 15vh; }
 
-            .chassis-grid { gap: 30px; }
-            .chassis-gif { width: 240px; height: 150px; }
-
             .boombox { min-width: 200px; padding: 10px 15px 10px 10px; bottom: 20px; }
             .track-wrapper { width: 100px; }
             .track-info { font-size: 0.8rem; }
@@ -164,7 +142,6 @@
             .email-modal-content { width: 95%; padding: 25px; }
             .email-form input, .email-form textarea { padding: 12px; }
 
-            /* IKONY BOCZNE NA GÓRZE EKRANU DLA MOBILE */
             .side-icon {
                 top: 25px; 
                 transform: none; 
@@ -175,8 +152,6 @@
             .icon-right { right: 20px; }
             .side-icon:hover { transform: scale(1.1); } 
         }
-
-        /* --- RWD: TELEFONY W POZIOMIE --- */
         @media (max-height: 500px) and (orientation: landscape) {
             .hero-spacer { min-height: 120vh; }
             .card { height: 85vh; }
@@ -247,30 +222,11 @@
     </div>
 
     <div class="hero-spacer">
-        <a href="#chassis-anchor" class="scroll-text txt-link">CURRENTLY AVAILABLE</a>
+        <a href="#latest-works" class="scroll-text txt-link">CURRENTLY AVAILABLE</a>
         <a href="#gallery-anchor" class="scroll-text txt-link-sub">GALLERY</a>
     </div>
 
-    <div class="chassis-section" id="chassis-anchor">
-        <div class="scroll-text txt-title" style="font-size: 3rem; margin-bottom: 20px;">Select Chassis</div>
-        
-        <div class="chassis-grid">
-            <a href="rps13.html" class="chassis-card">
-                <div class="chassis-gif"><img src="rps13.gif" alt="RPS13"></div>
-            </a>
-            <a href="s14.html" class="chassis-card">
-                <div class="chassis-gif"><img src="s14.gif" alt="S14"></div>
-            </a>
-            <a href="is200.html" class="chassis-card">
-                <div class="chassis-gif"><img src="is200.gif" alt="IS200"></div>
-            </a>
-        </div>
-        
-        <div class="scroll-text txt-title" style="margin-top: 80px;">Latest works</div>
-        <div class="scroll-text txt-arrow">↓</div>
-    </div>
-
-    <div class="cards-container">
+    <div class="cards-container" id="latest-works">
         <div class="card">
             <div class="card-content"><h2>IS200/IS300/ALTEZZA</h2><p>Grill IS200/IS300/ALTEZZA</p></div>
             <model-viewer src="is200grillv11.glb" auto-rotate camera-controls disable-zoom shadow-intensity="1"></model-viewer>
@@ -314,7 +270,6 @@
     </div>
 
     <script>
-        // --- 1. BOOMBOX (CROSSFADE SYSTEM) ---
         const boombox = document.getElementById('boombox');
         const audio1 = document.getElementById('bg-audio-1');
         const audio2 = document.getElementById('bg-audio-2');
@@ -408,7 +363,6 @@
 
         initPlayer();
 
-        // Obsługa dotyku/hovera Boombox
         setTimeout(() => { boombox.classList.add('collapsed'); }, 4000);
         
         boombox.addEventListener('mouseenter', () => boombox.classList.remove('collapsed'));
@@ -445,8 +399,7 @@
             }
         });
 
-        // --- 2. ANIMACJE NA SCROLL (Radar) ---
-        const animatedElements = document.querySelectorAll('.card, .scroll-text, .mosaic-item, .chassis-card');
+        const animatedElements = document.querySelectorAll('.card, .scroll-text, .mosaic-item');
         const observerOptions = { root: null, rootMargin: "0px 0px 0px 0px", threshold: 0 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -456,7 +409,6 @@
         }, observerOptions);
         animatedElements.forEach(el => observer.observe(el));
 
-        // --- 3. LIGHTBOX ---
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const galleryImages = document.querySelectorAll('.mosaic-item img');
@@ -471,7 +423,6 @@
             if (e.target !== lightboxImg) { lightbox.classList.remove('active'); }
         });
 
-        // --- 4. FORMULARZ EMAIL ---
         const emailModal = document.getElementById('email-modal');
         const openEmailBtn = document.getElementById('open-email-btn');
         const closeEmailBtn = document.getElementById('close-email');
