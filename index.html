@@ -72,7 +72,6 @@
             z-index: 10;
         }
 
-
         #volume-slider::before {
             content: '';
             position: absolute;
@@ -233,8 +232,8 @@
         </div>
     </div>
 
-    <audio id="bg-audio-1" autoplay muted></audio>
-    <audio id="bg-audio-2" muted></audio>
+    <audio id="bg-audio-1" autoplay></audio>
+    <audio id="bg-audio-2"></audio>
 
     <a href="https://www.instagram.com/trustcorp_/" target="_blank" class="side-icon icon-left">
         <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.822a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
@@ -314,9 +313,6 @@
         const audio1 = document.getElementById('bg-audio-1');
         const audio2 = document.getElementById('bg-audio-2');
 
-        let activeAudio = audio1;
-        let inactiveAudio = audio2;
-
         const muteToggleBtn = document.getElementById('mute-toggle');
         const iconUnmuted = document.getElementById('icon-unmuted');
         const iconMuted = document.getElementById('icon-muted');
@@ -340,6 +336,32 @@
         ];
 
         let currentTrackIndex = Math.floor(Math.random() * playlist.length);
+        let activeAudio = audio1;
+        let inactiveAudio = audio2;
+        let audioCtx, masterGain, gain1, gain2;
+        let isWebAudioInitialized = false;
+
+        function initWebAudio() {
+            if (isWebAudioInitialized) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+
+            masterGain = audioCtx.createGain();
+            masterGain.gain.value = isMuted ? 0 : masterVolume;
+            masterGain.connect(audioCtx.destination);
+
+            gain1 = audioCtx.createGain();
+            gain1.connect(masterGain);
+            const source1 = audioCtx.createMediaElementSource(audio1);
+            source1.connect(gain1);
+
+            gain2 = audioCtx.createGain();
+            gain2.connect(masterGain);
+            const source2 = audioCtx.createMediaElementSource(audio2);
+            source2.connect(gain2);
+
+            isWebAudioInitialized = true;
+        }
 
         function updateUI(trackUrl) {
             let fileName = trackUrl.split('/').pop().split('.')[0];
@@ -349,7 +371,6 @@
 
         function initPlayer() {
             activeAudio.src = playlist[currentTrackIndex];
-            activeAudio.volume = isMuted ? 0 : masterVolume;
             updateUI(playlist[currentTrackIndex]);
             activeAudio.play().catch(e => console.log("Czeka na start od użytkownika."));
         }
@@ -373,10 +394,17 @@
             do { nextIndex = Math.floor(Math.random() * playlist.length); }
             while (nextIndex === currentTrackIndex);
             currentTrackIndex = nextIndex;
+
             inactiveAudio.src = playlist[currentTrackIndex];
-            inactiveAudio.muted = isMuted;
-            inactiveAudio.volume = 0; 
             updateUI(playlist[currentTrackIndex]);
+
+            let activeGain = (activeAudio === audio1) ? gain1 : gain2;
+            let inactiveGain = (inactiveAudio === audio1) ? gain1 : gain2;
+
+            if (isWebAudioInitialized) {
+                inactiveGain.gain.value = 0;
+            }
+
             inactiveAudio.play().catch(e => console.error("Błąd autoplay przy miksie", e));
 
             let fadeSteps = 30;
@@ -386,15 +414,19 @@
                 step++;
                 let progress = step / fadeSteps; 
 
-                if (!isMuted) {
-                    activeAudio.volume = masterVolume * (1 - progress); 
-                    inactiveAudio.volume = masterVolume * progress;     
+                if (isWebAudioInitialized) {
+                    activeGain.gain.value = 1 - progress;
+                    inactiveGain.gain.value = progress;
                 }
 
                 if (step >= fadeSteps) {
                     clearInterval(fadeInterval);
                     activeAudio.pause(); 
-                    activeAudio.volume = isMuted ? 0 : masterVolume; 
+                    
+                    if (isWebAudioInitialized) {
+                        activeGain.gain.value = 1; 
+                    }
+
                     let temp = activeAudio;
                     activeAudio = inactiveAudio;
                     inactiveAudio = temp;
@@ -406,15 +438,22 @@
 
         initPlayer();
 
+        // Boombox UI 
         setTimeout(() => { boombox.classList.add('collapsed'); }, 4000);
-        
         boombox.addEventListener('mouseenter', () => boombox.classList.remove('collapsed'));
         boombox.addEventListener('mouseleave', () => boombox.classList.add('collapsed'));
         
         let isTouchingSlider = false;
         
-        volumeSlider.addEventListener('touchstart', () => { isTouchingSlider = true; });
-        volumeSlider.addEventListener('touchend', () => { setTimeout(() => { isTouchingSlider = false; }, 200); });
+        volumeSlider.addEventListener('touchstart', () => { 
+            initWebAudio();
+            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            isTouchingSlider = true; 
+        }, {passive: true});
+        
+        volumeSlider.addEventListener('touchend', () => { 
+            setTimeout(() => { isTouchingSlider = false; }, 200); 
+        });
         
         boombox.addEventListener('click', (e) => {
             if (e.target.closest('#mute-toggle') || e.target.closest('#volume-slider') || isTouchingSlider) return;
@@ -423,31 +462,34 @@
 
         muteToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            isMuted = !isMuted;
+            
+            initWebAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
 
-            audio1.muted = isMuted;
-            audio2.muted = isMuted;
+            isMuted = !isMuted;
 
             if (isMuted) {
                 iconUnmuted.style.display = 'none';
                 iconMuted.style.display = 'block';
+                masterGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1); 
             } else {
                 iconUnmuted.style.display = 'block';
                 iconMuted.style.display = 'none';
-
-                if (!isCrossfading) activeAudio.volume = masterVolume;
+                masterGain.gain.setTargetAtTime(masterVolume, audioCtx.currentTime, 0.1); 
                 activeAudio.play().catch(err => console.error("Przeglądarka nadal blokuje dźwięk:", err));
             }
         });
 
         function handleVolumeChange(e) {
             masterVolume = parseFloat(e.target.value);
-            if (!isCrossfading && !isMuted) {
-                activeAudio.volume = masterVolume;
+            if (isWebAudioInitialized && !isMuted) {
+                masterGain.gain.setTargetAtTime(masterVolume, audioCtx.currentTime, 0.1);
             }
         }
         volumeSlider.addEventListener('input', handleVolumeChange);
-        volumeSlider.addEventListener('touchmove', handleVolumeChange);
+        volumeSlider.addEventListener('touchmove', handleVolumeChange, {passive: true});
 
         const animatedElements = document.querySelectorAll('.card, .scroll-text, .mosaic-item');
         const observerOptions = { root: null, rootMargin: "0px 0px 0px 0px", threshold: 0 };
