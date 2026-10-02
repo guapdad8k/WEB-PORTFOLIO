@@ -214,6 +214,25 @@
             .boombox { bottom: 10px; padding: 5px 10px; }
             .v-eq { height: 15px; }
         }
+
+        /* CRT intro: the PNG already has a transparent screen aperture. */
+        .hero-spacer { box-sizing: border-box; justify-content: flex-start; padding: clamp(48px, 6vh, 80px) 20px 60px; gap: 24px; }
+        .crt-feature { width: clamp(300px, 33.333vw, 560px); max-width: 100%; margin: 0 0 20px; }
+        .crt-tv { position: relative; aspect-ratio: 4 / 3; isolation: isolate; filter: drop-shadow(0 18px 28px rgba(0,0,0,0.4)); }
+        .crt-screen { position: absolute; left: 9.1%; top: 8.6%; width: 81.7%; height: 81.2%; overflow: hidden; border-radius: 3%; background: #080a09; }
+        .crt-screen video { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .crt-screen::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.055) 3px, transparent 4px); box-shadow: inset 0 0 24px rgba(0,0,0,0.22); }
+        .crt-frame { position: relative; z-index: 1; display: block; width: 100%; height: auto; pointer-events: none; }
+        .crt-caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; color: rgba(255,255,255,0.65); font: 10px 'Roboto', sans-serif; letter-spacing: 2px; }
+        .crt-toggle { flex-shrink: 0; padding: 7px 0 7px 12px; border: 0; background: transparent; color: #fff; font: inherit; letter-spacing: inherit; cursor: pointer; opacity: 0.7; }
+        .crt-toggle:hover { opacity: 1; }
+        .crt-toggle:focus-visible { outline: 1px solid #fff; outline-offset: 4px; }
+        @media (max-width: 768px) {
+            .hero-spacer { padding-top: 80px; }
+            .crt-feature { width: min(86vw, 420px); margin-bottom: 16px; }
+            .crt-caption { font-size: 9px; letter-spacing: 1.4px; }
+        }
+
     </style>
 </head>
 <body>
@@ -278,6 +297,21 @@
     </div>
 
     <div class="hero-spacer">
+        <figure class="crt-feature" aria-label="Film poglądowy bodykitu RPS13 na monitorze CRT">
+            <div class="crt-tv">
+                <div class="crt-screen">
+                    <video id="crt-video" autoplay loop muted playsinline preload="metadata" aria-label="RPS13 — film poglądowy bodykitu">
+                        <source src="RPS13_handheld_loop_v2.mp4" type="video/mp4">
+                        <a href="RPS13_handheld_loop_v2.mp4">Obejrzyj film RPS13</a>
+                    </video>
+                </div>
+                <img class="crt-frame" src="CRT_TEMPLATE.png" alt="" width="1024" height="768" fetchpriority="high">
+            </div>
+            <figcaption class="crt-caption">
+                <span>RPS13 / CONCEPT FILM</span>
+                <button class="crt-toggle" id="crt-toggle" type="button" aria-controls="crt-video" aria-label="Zatrzymaj film">PAUSE</button>
+            </figcaption>
+        </figure>
         <a href="#latest-works" class="scroll-text txt-link">CURRENTLY AVAILABLE</a>
         <a href="#concept-work" class="scroll-text txt-link-sub">CONCEPT WORK</a>
         <a href="#gallery-anchor" class="scroll-text txt-link-sub">GALLERY</a>
@@ -333,6 +367,49 @@
     </div>
 
     <script>
+
+        const crtVideo = document.getElementById('crt-video');
+        const crtToggle = document.getElementById('crt-toggle');
+        const crtReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let crtRequestedPlayback = !crtReducedMotion.matches;
+        let crtInView = true;
+
+        function updateCrtToggle() {
+            crtToggle.textContent = crtVideo.paused ? 'PLAY' : 'PAUSE';
+            crtToggle.setAttribute('aria-label', crtVideo.paused ? 'Odtwórz film' : 'Zatrzymaj film');
+        }
+        function syncCrtPlayback() {
+            if (crtRequestedPlayback && crtInView && !document.hidden) {
+                crtVideo.play().catch(updateCrtToggle);
+            } else {
+                crtVideo.pause();
+            }
+            updateCrtToggle();
+        }
+        // Pause outside the viewport without losing the user's pause choice.
+        crtVideo.muted = true;
+        if (crtReducedMotion.matches) crtVideo.removeAttribute('autoplay');
+        crtVideo.addEventListener('play', updateCrtToggle);
+        crtVideo.addEventListener('pause', updateCrtToggle);
+        crtVideo.addEventListener('error', () => {
+            crtToggle.textContent = 'RETRY';
+            crtToggle.setAttribute('aria-label', 'Spróbuj ponownie odtworzyć film');
+        });
+        crtToggle.addEventListener('click', () => {
+            crtRequestedPlayback = crtVideo.paused;
+            syncCrtPlayback();
+        });
+        new IntersectionObserver(([entry]) => {
+            crtInView = entry.isIntersecting;
+            syncCrtPlayback();
+        }, { threshold: 0.1 }).observe(crtVideo);
+        document.addEventListener('visibilitychange', syncCrtPlayback);
+        crtReducedMotion.addEventListener('change', (event) => {
+            if (event.matches) crtRequestedPlayback = false;
+            syncCrtPlayback();
+        });
+        syncCrtPlayback();
+
         const boombox = document.getElementById('boombox');
         const audio1 = document.getElementById('bg-audio-1');
         const audio2 = document.getElementById('bg-audio-2');
