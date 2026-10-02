@@ -153,19 +153,20 @@
         .mosaic-item:hover img { transform: scale(1.1); }
         
 
+
         .concept-section { padding-bottom: 10vh; }
         .concept-section h2 { margin: 0; text-align: center; }
-        .concept-slideshow { width: 90%; max-width: 1100px; margin-top: 60px; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.65); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .concept-image-button { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
-        .concept-image-button img { display: block; width: 100%; height: clamp(260px, 65vh, 720px); object-fit: contain; }
-        .concept-controls { display: flex; align-items: center; justify-content: center; gap: 20px; padding: 16px; color: #fff; }
-        .concept-controls[hidden] { display: none; }
-        .concept-controls button { border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 10px 16px; background: transparent; color: #fff; font: inherit; cursor: pointer; }
-        .concept-controls button:hover { background: rgba(255,255,255,0.15); }
-        .concept-slideshow:focus-visible, .concept-slideshow button:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+        .concept-stack { width: 90%; max-width: 1100px; margin-top: 60px; padding-bottom: 20vh; display: flex; flex-direction: column; align-items: center; gap: 20vh; }
+        .concept-card { position: sticky; top: 10vh; z-index: var(--concept-layer); width: 100%; height: 75vh; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; background: transparent; cursor: zoom-in; opacity: 0; transform: translateY(100px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        .concept-card.active { opacity: 1; transform: translateY(0); }
+        .concept-card img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; border-radius: 20px; }
+        .concept-card:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
         @media (max-width: 768px) {
-            .concept-slideshow { width: 100%; margin-top: 30px; }
-            .concept-controls { gap: 12px; }
+            .concept-stack { width: 100%; margin-top: 30px; gap: 15vh; }
+            .concept-card { top: 5vh; height: 65vh; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .concept-card { opacity: 1; transform: none; transition: none; }
         }
 
         .lightbox { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
@@ -312,18 +313,7 @@
 
     <section class="gallery-section concept-section" id="concept-work" aria-labelledby="concept-title">
         <h2 class="scroll-text txt-title" id="concept-title">Concept Work</h2>
-        <div class="concept-slideshow" role="region" aria-roledescription="carousel" aria-label="Concept work" tabindex="0">
-            <button class="concept-image-button" type="button" aria-label="Powiększ zdjęcie">
-                <img id="concept-image" src="IMG_2693.png" alt="Concept work — projekt 01">
-                <img id="concept-image" src="IMG_1819.png" alt="Concept work - projekt 02">
-            </button>
-            <div class="concept-controls" hidden>
-                <button type="button" id="concept-prev" aria-label="Poprzednie zdjęcie">&#8592;</button>
-                <span id="concept-counter" aria-live="polite" aria-atomic="true">1 / 1</span>
-                <button type="button" id="concept-next" aria-label="Następne zdjęcie">&#8594;</button>
-                <button type="button" id="concept-play" aria-label="Włącz automatyczny pokaz" aria-pressed="false">PLAY</button>
-            </div>
-        </div>
+        <div class="concept-stack" id="concept-stack"></div>
     </section>
 
     <div class="gallery-section" id="gallery-anchor">
@@ -550,96 +540,40 @@
         });
 
 
-        // CONCEPT WORK: dopisz nazwy plików po przesłaniu zdjęć do folderu img.
-        // Wielkość liter i rozszerzenie muszą być takie same jak w repo.
+
+        // CONCEPT WORK: dodawaj zdjęcia WYŁĄCZNIE do tej listy, w kolejności kart.
+        // Pliki z folderu img: { src: 'img/nazwa-zdjecia.png', alt: 'Opis projektu' },
+        // Nie trzeba dodawać osobnych znaczników <img> w HTML.
         const conceptImages = [
             { src: 'IMG_2693.png', alt: 'Concept work — projekt 01' },
+            { src: 'IMG_1819.png', alt: 'Concept work — projekt 02' },
             // { src: 'img/nazwa-zdjecia.png', alt: 'Opis projektu' },
-            // { src: 'img/kolejny-render.jpg', alt: 'Opis kolejnego projektu' },
         ];
 
-        const conceptSlideshow = document.querySelector('.concept-slideshow');
-        const conceptImage = document.getElementById('concept-image');
-        const conceptCounter = document.getElementById('concept-counter');
-        const conceptPlay = document.getElementById('concept-play');
-        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-        let conceptIndex = 0;
-        let conceptPlaying = !reducedMotion.matches;
-        let conceptVisible = false;
-        let conceptHovered = false;
-        let conceptTimer;
-
-        function showConcept(index) {
-            conceptIndex = (index + conceptImages.length) % conceptImages.length;
-            conceptImage.src = conceptImages[conceptIndex].src;
-            conceptImage.alt = conceptImages[conceptIndex].alt;
-            conceptCounter.textContent = `${conceptIndex + 1} / ${conceptImages.length}`;
-        }
-
-        function updateConceptPlayback() {
-            clearInterval(conceptTimer);
-            conceptPlay.textContent = conceptPlaying ? 'PAUSE' : 'PLAY';
-            conceptPlay.setAttribute('aria-pressed', String(conceptPlaying));
-            conceptPlay.setAttribute('aria-label', conceptPlaying ? 'Zatrzymaj automatyczny pokaz' : 'Włącz automatyczny pokaz');
-            conceptCounter.setAttribute('aria-live', conceptPlaying ? 'off' : 'polite');
-            if (conceptImages.length > 1 && conceptPlaying && conceptVisible &&
-                !conceptHovered && !document.hidden && !lightbox.classList.contains('active') &&
-                !conceptSlideshow.contains(document.activeElement)) {
-                conceptTimer = setInterval(() => showConcept(conceptIndex + 1), 5000);
-            }
-        }
-
-        function stepConcept(direction) {
-            conceptPlaying = false;
-            showConcept(conceptIndex + direction);
-            updateConceptPlayback();
-        }
-
-        if (conceptImages.length) {
-            showConcept(0);
-            document.querySelector('.concept-controls').hidden = conceptImages.length < 2;
-            document.getElementById('concept-prev').addEventListener('click', () => stepConcept(-1));
-            document.getElementById('concept-next').addEventListener('click', () => stepConcept(1));
-            conceptPlay.addEventListener('click', () => {
-                conceptPlaying = !conceptPlaying;
-                updateConceptPlayback();
-            });
-            conceptSlideshow.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    stepConcept(e.key === 'ArrowLeft' ? -1 : 1);
-                }
-            });
-            conceptSlideshow.addEventListener('mouseenter', () => { conceptHovered = true; updateConceptPlayback(); });
-            conceptSlideshow.addEventListener('mouseleave', () => { conceptHovered = false; updateConceptPlayback(); });
-            conceptSlideshow.addEventListener('focusin', updateConceptPlayback);
-            conceptSlideshow.addEventListener('focusout', () => setTimeout(updateConceptPlayback, 0));
-            document.addEventListener('visibilitychange', updateConceptPlayback);
-            new IntersectionObserver(([entry]) => {
-                conceptVisible = entry.isIntersecting;
-                updateConceptPlayback();
-            }, { threshold: 0.25 }).observe(conceptSlideshow);
-            document.querySelector('.concept-image-button').addEventListener('click', () => {
-                lightboxImg.src = conceptImage.src;
-                lightboxImg.alt = conceptImage.alt;
+        const conceptStack = document.getElementById('concept-stack');
+        conceptImages.forEach((image, index) => {
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'concept-card';
+            card.style.setProperty('--concept-layer', index + 1);
+            card.setAttribute('aria-label', 'Powiększ: ' + image.alt);
+            const img = document.createElement('img');
+            img.src = image.src;
+            img.alt = image.alt;
+            img.decoding = 'async';
+            card.appendChild(img);
+            conceptStack.appendChild(card);
+            // Ten sam observer i animacja wejścia co przy kartach modeli 3D.
+            observer.observe(card);
+            card.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
                 lightbox.classList.add('active');
-                updateConceptPlayback();
             });
-            lightbox.addEventListener('click', updateConceptPlayback);
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    lightbox.classList.remove('active');
-                    updateConceptPlayback();
-                }
-            });
-            reducedMotion.addEventListener('change', () => {
-                if (reducedMotion.matches) conceptPlaying = false;
-                updateConceptPlayback();
-            });
-            updateConceptPlayback();
-        } else {
-            conceptSlideshow.hidden = true;
-        }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') lightbox.classList.remove('active');
+        });
 
         const emailModal = document.getElementById('email-modal');
         const openEmailBtn = document.getElementById('open-email-btn');
