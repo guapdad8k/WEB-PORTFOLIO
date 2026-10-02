@@ -239,9 +239,31 @@
             .film-feature { width: min(60vw, 76vh); }
         }
 
+
+        .brand-logo { position: fixed; top: 0; left: 0; width: 260px; aspect-ratio: 440 / 232; overflow: hidden; z-index: 200; pointer-events: none; transform-origin: top left; visibility: hidden; will-change: transform; }
+        .brand-logo img { position: absolute; width: 116.363636%; max-width: none; height: auto; left: -8.181818%; top: -60.775862%; filter: url(#logo-remove-dark); }
+        .logo-filter-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+        .hero-spacer { padding-top: clamp(112px, 14vh, 160px); }
+        @media (max-width: 768px) {
+            .hero-spacer { padding-top: 128px; }
+            .icon-left { top: 82px; }
+        }
     </style>
 </head>
 <body>
+    <svg class="logo-filter-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Remove the near-black GIF backdrop while retaining silver artwork and animation. -->
+            <filter id="logo-remove-dark" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+                <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0.333333 0.333333 0.333333 0 0"/>
+                <feComponentTransfer><feFuncA type="linear" slope="12" intercept="-0.6"/></feComponentTransfer>
+            </filter>
+        </defs>
+    </svg>
+    <div class="brand-logo" id="brand-logo">
+        <img src="janko-logo-spin.gif" alt="Janko — obracające się logo" width="512" height="512" fetchpriority="high">
+    </div>
+
 
     <div class="boombox" id="boombox">
         <div class="peek-tab">
@@ -370,6 +392,50 @@
     </div>
 
     <script>
+
+
+        const brandLogo = document.getElementById('brand-logo');
+        const logoFilmFeature = document.querySelector('.film-feature');
+        let logoGeometry;
+        let logoFramePending = false;
+        function measureLogo() {
+            const mobile = window.innerWidth <= 768;
+            const width = Math.min(260, window.innerWidth * 0.43);
+            const height = width * 232 / 440;
+            const filmTop = logoFilmFeature.getBoundingClientRect().top + window.scrollY;
+            logoGeometry = {
+                width,
+                startX: (window.innerWidth - width) / 2,
+                startY: Math.max(12, filmTop - height + 24),
+                endX: mobile ? 16 : 24,
+                endY: mobile ? 16 : 20,
+                endScale: (mobile ? 82 : 104) / width,
+                distance: Math.min(420, window.innerHeight * 0.55)
+            };
+            brandLogo.style.width = width + 'px';
+            renderLogo();
+            brandLogo.style.visibility = 'visible';
+        }
+        function renderLogo() {
+            logoFramePending = false;
+            if (!logoGeometry) return;
+            const g = logoGeometry;
+            const progress = Math.max(0, Math.min(1, window.scrollY / g.distance));
+            const eased = progress * progress * (3 - 2 * progress);
+            const x = g.startX + (g.endX - g.startX) * eased;
+            const y = g.startY + (g.endY - g.startY) * eased;
+            const scale = 1 + (g.endScale - 1) * eased;
+            brandLogo.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+        }
+        window.addEventListener('scroll', () => {
+            if (!logoFramePending) {
+                logoFramePending = true;
+                requestAnimationFrame(renderLogo);
+            }
+        }, { passive: true });
+        window.addEventListener('resize', measureLogo);
+        window.addEventListener('pageshow', measureLogo);
+        measureLogo();
 
         const filmVideo = document.getElementById('film-video');
         const filmToggle = document.getElementById('film-toggle');
