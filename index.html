@@ -152,6 +152,22 @@
         .mosaic-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
         .mosaic-item:hover img { transform: scale(1.1); }
         
+
+        .concept-section { padding-bottom: 10vh; }
+        .concept-section h2 { margin: 0; text-align: center; }
+        .concept-slideshow { width: 90%; max-width: 1100px; margin-top: 60px; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.65); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .concept-image-button { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+        .concept-image-button img { display: block; width: 100%; height: clamp(260px, 65vh, 720px); object-fit: contain; }
+        .concept-controls { display: flex; align-items: center; justify-content: center; gap: 20px; padding: 16px; color: #fff; }
+        .concept-controls[hidden] { display: none; }
+        .concept-controls button { border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 10px 16px; background: transparent; color: #fff; font: inherit; cursor: pointer; }
+        .concept-controls button:hover { background: rgba(255,255,255,0.15); }
+        .concept-slideshow:focus-visible, .concept-slideshow button:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+        @media (max-width: 768px) {
+            .concept-slideshow { width: 100%; margin-top: 30px; }
+            .concept-controls { gap: 12px; }
+        }
+
         .lightbox { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .lightbox.active { opacity: 1; pointer-events: all; }
         .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
@@ -262,6 +278,7 @@
 
     <div class="hero-spacer">
         <a href="#latest-works" class="scroll-text txt-link">CURRENTLY AVAILABLE</a>
+        <a href="#concept-work" class="scroll-text txt-link-sub">CONCEPT WORK</a>
         <a href="#gallery-anchor" class="scroll-text txt-link-sub">GALLERY</a>
     </div>
 
@@ -292,6 +309,22 @@
         </div>
     </div>
 
+
+    <section class="gallery-section concept-section" id="concept-work" aria-labelledby="concept-title">
+        <h2 class="scroll-text txt-title" id="concept-title">Concept Work</h2>
+        <div class="concept-slideshow" role="region" aria-roledescription="carousel" aria-label="Concept work" tabindex="0">
+            <button class="concept-image-button" type="button" aria-label="Powiększ zdjęcie">
+                <img id="concept-image" src="IMG_2693.png" alt="Concept work — projekt 01">
+            </button>
+            <div class="concept-controls" hidden>
+                <button type="button" id="concept-prev" aria-label="Poprzednie zdjęcie">&#8592;</button>
+                <span id="concept-counter" aria-live="polite" aria-atomic="true">1 / 1</span>
+                <button type="button" id="concept-next" aria-label="Następne zdjęcie">&#8594;</button>
+                <button type="button" id="concept-play" aria-label="Włącz automatyczny pokaz" aria-pressed="false">PLAY</button>
+            </div>
+        </div>
+    </section>
+
     <div class="gallery-section" id="gallery-anchor">
         <div class="scroll-text txt-title">Gallery</div>
         <div class="mosaic-container">
@@ -300,7 +333,6 @@
             <div class="mosaic-item"><img src="IMG_0589.png" alt="L3"></div>
             <div class="mosaic-item"><img src="IMG_0587.png" alt="L5"></div>
             <div class="mosaic-item"><img src="IMG_0600.png" alt="L6"></div>
-            <div class="mosaic-item"><img src="IMG_2693.png" alt="L7"></div>
         </div>
     </div>
 
@@ -515,6 +547,98 @@
         lightbox.addEventListener('click', (e) => {
             if (e.target !== lightboxImg) { lightbox.classList.remove('active'); }
         });
+
+
+        // CONCEPT WORK: dopisz nazwy plików po przesłaniu zdjęć do folderu img.
+        // Wielkość liter i rozszerzenie muszą być takie same jak w repo.
+        const conceptImages = [
+            { src: 'IMG_2693.png', alt: 'Concept work — projekt 01' },
+            // { src: 'img/nazwa-zdjecia.png', alt: 'Opis projektu' },
+            // { src: 'img/kolejny-render.jpg', alt: 'Opis kolejnego projektu' },
+        ];
+
+        const conceptSlideshow = document.querySelector('.concept-slideshow');
+        const conceptImage = document.getElementById('concept-image');
+        const conceptCounter = document.getElementById('concept-counter');
+        const conceptPlay = document.getElementById('concept-play');
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let conceptIndex = 0;
+        let conceptPlaying = !reducedMotion.matches;
+        let conceptVisible = false;
+        let conceptHovered = false;
+        let conceptTimer;
+
+        function showConcept(index) {
+            conceptIndex = (index + conceptImages.length) % conceptImages.length;
+            conceptImage.src = conceptImages[conceptIndex].src;
+            conceptImage.alt = conceptImages[conceptIndex].alt;
+            conceptCounter.textContent = `${conceptIndex + 1} / ${conceptImages.length}`;
+        }
+
+        function updateConceptPlayback() {
+            clearInterval(conceptTimer);
+            conceptPlay.textContent = conceptPlaying ? 'PAUSE' : 'PLAY';
+            conceptPlay.setAttribute('aria-pressed', String(conceptPlaying));
+            conceptPlay.setAttribute('aria-label', conceptPlaying ? 'Zatrzymaj automatyczny pokaz' : 'Włącz automatyczny pokaz');
+            conceptCounter.setAttribute('aria-live', conceptPlaying ? 'off' : 'polite');
+            if (conceptImages.length > 1 && conceptPlaying && conceptVisible &&
+                !conceptHovered && !document.hidden && !lightbox.classList.contains('active') &&
+                !conceptSlideshow.contains(document.activeElement)) {
+                conceptTimer = setInterval(() => showConcept(conceptIndex + 1), 5000);
+            }
+        }
+
+        function stepConcept(direction) {
+            conceptPlaying = false;
+            showConcept(conceptIndex + direction);
+            updateConceptPlayback();
+        }
+
+        if (conceptImages.length) {
+            showConcept(0);
+            document.querySelector('.concept-controls').hidden = conceptImages.length < 2;
+            document.getElementById('concept-prev').addEventListener('click', () => stepConcept(-1));
+            document.getElementById('concept-next').addEventListener('click', () => stepConcept(1));
+            conceptPlay.addEventListener('click', () => {
+                conceptPlaying = !conceptPlaying;
+                updateConceptPlayback();
+            });
+            conceptSlideshow.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    stepConcept(e.key === 'ArrowLeft' ? -1 : 1);
+                }
+            });
+            conceptSlideshow.addEventListener('mouseenter', () => { conceptHovered = true; updateConceptPlayback(); });
+            conceptSlideshow.addEventListener('mouseleave', () => { conceptHovered = false; updateConceptPlayback(); });
+            conceptSlideshow.addEventListener('focusin', updateConceptPlayback);
+            conceptSlideshow.addEventListener('focusout', () => setTimeout(updateConceptPlayback, 0));
+            document.addEventListener('visibilitychange', updateConceptPlayback);
+            new IntersectionObserver(([entry]) => {
+                conceptVisible = entry.isIntersecting;
+                updateConceptPlayback();
+            }, { threshold: 0.25 }).observe(conceptSlideshow);
+            document.querySelector('.concept-image-button').addEventListener('click', () => {
+                lightboxImg.src = conceptImage.src;
+                lightboxImg.alt = conceptImage.alt;
+                lightbox.classList.add('active');
+                updateConceptPlayback();
+            });
+            lightbox.addEventListener('click', updateConceptPlayback);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    lightbox.classList.remove('active');
+                    updateConceptPlayback();
+                }
+            });
+            reducedMotion.addEventListener('change', () => {
+                if (reducedMotion.matches) conceptPlaying = false;
+                updateConceptPlayback();
+            });
+            updateConceptPlayback();
+        } else {
+            conceptSlideshow.hidden = true;
+        }
 
         const emailModal = document.getElementById('email-modal');
         const openEmailBtn = document.getElementById('open-email-btn');
