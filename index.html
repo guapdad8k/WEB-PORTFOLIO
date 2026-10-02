@@ -219,8 +219,8 @@
         /* Intro film: full frame, with edges fading into the page backdrop. */
         .hero-spacer { box-sizing: border-box; justify-content: flex-start; padding: clamp(48px, 6vh, 80px) 20px 60px; gap: 22px; }
         .film-feature { width: min(64vw, 69.333vh, 800px); max-width: 100%; margin: 0 0 20px; }
-        .film-stage { position: relative; aspect-ratio: 4 / 3; }
-        .film-stage video { display: block; width: 100%; height: 100%; object-fit: contain;
+        .film-stage { position: relative; aspect-ratio: 4 / 3; isolation: isolate; }
+        .film-stage video { position: relative; z-index: 1; display: block; width: 100%; height: 100%; object-fit: contain;
             -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(to bottom, transparent, #000 5%, #000 85%, transparent);
             -webkit-mask-composite: source-in;
             mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(to bottom, transparent, #000 5%, #000 85%, transparent);
@@ -246,6 +246,16 @@
         @media (max-width: 768px) {
             .hero-spacer { padding-top: 128px; }
             .icon-left { top: 82px; }
+        }
+
+        .film-ambience { position: absolute; z-index: 0; top: 5%; bottom: 5%; left: -24%; right: -24%; overflow: hidden; pointer-events: none;
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 25%, transparent 72%);
+            mask-image: radial-gradient(ellipse at center, #000 25%, transparent 72%);
+        }
+        .film-ambience canvas { display: block; width: 100%; height: 100%; filter: blur(34px) saturate(1.25); opacity: 0.42; }
+        @media (max-width: 768px) {
+            .film-ambience { left: -14%; right: -14%; }
+            .film-ambience canvas { filter: blur(22px) saturate(1.25); opacity: 0.34; }
         }
     </style>
 </head>
@@ -317,6 +327,7 @@
     <div class="hero-spacer">
         <figure class="film-feature" aria-label="Film poglądowy bodykitu RPS13">
             <div class="film-stage">
+                <div class="film-ambience" aria-hidden="true"><canvas id="film-ambience" width="96" height="72"></canvas></div>
                 <video id="film-video" autoplay loop muted playsinline preload="metadata" aria-label="RPS13 — film poglądowy bodykitu">
                     <source src="RPS13_handheld_loop_v2.mp4" type="video/mp4">
                     <a href="RPS13_handheld_loop_v2.mp4">Obejrzyj film RPS13</a>
@@ -469,6 +480,48 @@
             syncFilmPlayback();
         });
         syncFilmPlayback();
+
+
+        // Reuse the playing video's frames for a small, local ambient halo.
+        const filmAmbientCanvas = document.getElementById('film-ambience');
+        const filmAmbientContext = filmAmbientCanvas.getContext('2d', { alpha: false });
+        let filmAmbientFrame = null;
+        let filmAmbientLastTime = -Infinity;
+        function paintFilmAmbience() {
+            if (!filmAmbientContext || filmVideo.readyState < 2) return;
+            filmAmbientContext.drawImage(filmVideo, 0, 0, 96, 72);
+        }
+        function stopFilmAmbience() {
+            if (filmAmbientFrame !== null) cancelAnimationFrame(filmAmbientFrame);
+            filmAmbientFrame = null;
+        }
+        function tickFilmAmbience(time) {
+            filmAmbientFrame = null;
+            if (filmVideo.paused || document.hidden || !filmInView) return;
+            if (time - filmAmbientLastTime >= 83) {
+                paintFilmAmbience();
+                filmAmbientLastTime = time;
+            }
+            filmAmbientFrame = requestAnimationFrame(tickFilmAmbience);
+        }
+        function startFilmAmbience() {
+            if (!filmAmbientContext) return;
+            stopFilmAmbience();
+            filmAmbientLastTime = -Infinity;
+            paintFilmAmbience();
+            if (!filmVideo.paused && !document.hidden && filmInView) {
+                filmAmbientFrame = requestAnimationFrame(tickFilmAmbience);
+            }
+        }
+        filmVideo.addEventListener('loadeddata', startFilmAmbience);
+        filmVideo.addEventListener('play', startFilmAmbience);
+        filmVideo.addEventListener('seeked', paintFilmAmbience);
+        filmVideo.addEventListener('pause', stopFilmAmbience);
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stopFilmAmbience();
+            else startFilmAmbience();
+        });
+        startFilmAmbience();
 
         const boombox = document.getElementById('boombox');
         const audio1 = document.getElementById('bg-audio-1');
