@@ -240,9 +240,8 @@
         }
 
 
-        .brand-logo { position: fixed; top: 0; left: 0; width: 260px; aspect-ratio: 440 / 232; overflow: hidden; z-index: 200; pointer-events: none; transform-origin: top left; visibility: hidden; will-change: transform; }
-        .brand-logo img { position: absolute; width: 116.363636%; max-width: none; height: auto; left: -8.181818%; top: -60.775862%; filter: url(#logo-remove-dark); }
-        .logo-filter-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+        .brand-logo { position: fixed; top: 0; left: 0; width: 260px; height: 137.1px; aspect-ratio: 440 / 232; overflow: hidden; z-index: 200; pointer-events: none; transform-origin: top left; visibility: visible; mix-blend-mode: screen; transform: translate3d(calc(50vw - 130px), 12px, 0); will-change: transform; }
+        .brand-logo img { position: absolute; width: 116.363636%; max-width: none; height: auto; left: -8.181818%; top: -60.775862%; filter: contrast(1.12); }
         .hero-spacer { padding-top: clamp(112px, 14vh, 160px); }
         @media (max-width: 768px) {
             .hero-spacer { padding-top: 128px; }
@@ -251,15 +250,6 @@
     </style>
 </head>
 <body>
-    <svg class="logo-filter-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <!-- Remove the near-black GIF backdrop while retaining silver artwork and animation. -->
-            <filter id="logo-remove-dark" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
-                <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0.333333 0.333333 0.333333 0 0"/>
-                <feComponentTransfer><feFuncA type="linear" slope="12" intercept="-0.6"/></feComponentTransfer>
-            </filter>
-        </defs>
-    </svg>
     <div class="brand-logo" id="brand-logo">
         <img src="janko-logo-spin.gif" alt="Janko — obracające się logo" width="512" height="512" fetchpriority="high">
     </div>
@@ -413,6 +403,7 @@
                 distance: Math.min(420, window.innerHeight * 0.55)
             };
             brandLogo.style.width = width + 'px';
+            brandLogo.style.height = height + 'px';
             renderLogo();
             brandLogo.style.visibility = 'visible';
         }
