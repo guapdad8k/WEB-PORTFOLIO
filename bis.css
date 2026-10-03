@@ -7,9 +7,15 @@
 
 /* Soft film edge and music links in the footer panel. */
 .feature{background:#132b40}
-.feature video{-webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.1) 9%,rgba(0,0,0,.45) 24%,#000 48%);mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.1) 9%,rgba(0,0,0,.45) 24%,#000 48%)}
+
 .feature:after{background:linear-gradient(90deg,#132b40 12%,rgba(19,43,64,.94) 29%,rgba(19,43,64,.58) 46%,rgba(19,43,64,.2) 67%,transparent 100%)}
 .network-links{display:flex;flex-direction:column;align-items:flex-start;gap:9px;margin-top:12px}
 .network-links a{min-height:24px;display:flex;align-items:center;font-size:9px;letter-spacing:.5px}
 .teasers button[data-view="works"] img{object-fit:contain;background:#597487;filter:none;opacity:1}
-@media(max-width:760px){.feature video{-webkit-mask-image:linear-gradient(to right,transparent,rgba(0,0,0,.35) 25%,#000 65%);mask-image:linear-gradient(to right,transparent,rgba(0,0,0,.35) 25%,#000 65%)}.feature:after{background:linear-gradient(90deg,rgba(19,43,64,.88),rgba(19,43,64,.48) 50%,rgba(19,43,64,.08))}.network-links{gap:4px}.network-links a{min-height:36px}}
+@media(max-width:760px){.feature:after{background:linear-gradient(90deg,rgba(19,43,64,.88),rgba(19,43,64,.48) 50%,rgba(19,43,64,.08))}.network-links{gap:4px}.network-links a{min-height:36px}}
+
+/* Use a static overlay instead of masking the decoded video surface. */
+.feature{isolation:isolate}
+.feature video{-webkit-mask-image:none;mask-image:none}
+.feature:after{z-index:1;background:linear-gradient(90deg,#132b40 0%,#132b40 37%,rgba(19,43,64,.97) 43%,rgba(19,43,64,.75) 52%,rgba(19,43,64,.2) 67%,rgba(19,43,64,0) 100%)}
+@media(max-width:760px){.feature:after{background:linear-gradient(90deg,#132b40 0%,rgba(19,43,64,.89) 25%,rgba(19,43,64,.3) 65%,rgba(19,43,64,.08) 100%)}}
