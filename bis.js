@@ -38,9 +38,54 @@ window.addEventListener('hashchange',()=>navigate(location.hash.slice(1)));navig
 ['IMG_0588.png','IMG_0586.png','IMG_0589.png','IMG_0587.png','IMG_0600.png','IMG_0545.JPG'].forEach((src,i)=>{const b=document.createElement('button');b.className='photo';b.dataset.image=src;b.innerHTML=`<img src="${src}" alt="Archiwum — kadr ${i+1}" loading="lazy"><span>FRAME / ${String(i+1).padStart(3,'0')} ↗</span>`;$('gallery-grid').append(b);});
 document.querySelectorAll('[data-image]').forEach(b=>b.onclick=()=>{$('large-image').src=b.dataset.image;$('large-image').alt=b.querySelector('img').alt;$('image-caption').textContent=$('large-image').alt;$('lightbox').showModal();});
 $('close-lightbox').onclick=()=>$('lightbox').close();$('lightbox').addEventListener('click',e=>{if(e.target===$('lightbox'))$('lightbox').close();});
-const tracks=['Gang_Starr_-_Mass_Appeal.mp3','A_Tribe_Called_Quest_-_1nce_Again_ft._Tammy_Lucas.mp3','Black_Moon_-_Enta_Da_Stage.mp3','Craig_Mack_-_Get_Down.mp3','Gang_Starr,_Total_-_Discipline.mp3','Miilkbones_-_Mindgamez.mp3','Redman_-_Pick_It_Up.mp3','Capone_N_Noreaga_-_Capone_Bone.mp3','Get_A_Hold.mp3','2_Thousand.mp3'];
+const tracks=[
+  {
+    "src": "audio/freerun_0.ogg",
+    "title": "Jazz Ass"
+  },
+  {
+    "src": "audio/freerun_1.ogg",
+    "title": "Blue Haze"
+  },
+  {
+    "src": "audio/freerun_2.ogg",
+    "title": "The Essence"
+  },
+  {
+    "src": "audio/freerun_3.ogg",
+    "title": "Heat"
+  },
+  {
+    "src": "audio/freerun_4.ogg",
+    "title": "Positive Notions"
+  },
+  {
+    "src": "audio/freerun_5.ogg",
+    "title": "Rogue Unit"
+  },
+  {
+    "src": "audio/freerun_6.ogg",
+    "title": "Subphonic"
+  },
+  {
+    "src": "audio/freerun_7.ogg",
+    "title": "Imagine"
+  },
+  {
+    "src": "audio/freerun_8.ogg",
+    "title": "Down"
+  },
+  {
+    "src": "audio/garage.ogg",
+    "title": "New Generation (Boymerang Remix)"
+  },
+  {
+    "src": "audio/mainmenu.ogg",
+    "title": "Circles (Remix)"
+  }
+];
 let track=Math.floor(Math.random()*tracks.length);const audio=$('audio');audio.volume=.35;let musicWanted=true;
-function loadTrack(){audio.src=tracks[track];$('track-name').textContent=tracks[track].replace(/\.mp3$/,'').replaceAll('_',' ');}
+function loadTrack(){audio.src=tracks[track].src;$('track-name').textContent=tracks[track].title;}
 async function play(){try{await audio.play();}catch{$('audio-state').textContent='PLAYBACK UNAVAILABLE';}}
 function stepTrack(dir){musicWanted=true;track=(track+dir+tracks.length)%tracks.length;loadTrack();play();}
 $('play').onclick=()=>{musicWanted=audio.paused;if(musicWanted)play();else audio.pause();};
