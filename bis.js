@@ -2,17 +2,11 @@
 const $ = id => document.getElementById(id);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const film = $('film');
-let filmWanted = !reduced.matches;
 let currentView = 'home';
-function syncFilm() {
-  if (filmWanted && currentView === 'home' && !document.hidden) film.play().catch(() => {$('film-toggle').textContent = '▶ PLAY FILM';});
-  else film.pause();
-}
-film.addEventListener('play', () => {$('film-toggle').textContent = 'Ⅱ PAUSE FILM';});
-film.addEventListener('pause', () => {$('film-toggle').textContent = '▶ PLAY FILM';});
-$('film-toggle').onclick = () => {filmWanted = film.paused; syncFilm();};
-document.addEventListener('visibilitychange', syncFilm);
-reduced.addEventListener('change', () => {if(reduced.matches){filmWanted=false; $('model').removeAttribute('auto-rotate'); $('rotate').textContent='AUTO ROTATE / OFF'; $('rotate').setAttribute('aria-pressed','false');}syncFilm();});
+function syncFilm(){if(!document.hidden)film.play().catch(()=>{});}
+film.addEventListener('pause',syncFilm);
+document.addEventListener('visibilitychange',syncFilm);
+document.addEventListener('pointerdown',syncFilm,{passive:true});
 const objects = [
  ['IS200 / IS300 / ALTEZZA','FRONT GRILLE','is200grillv11.glb'],
  ['MX-5 NA','HEADLIGHT COVER','NAHeadlightCover3.glb'],
@@ -33,10 +27,10 @@ $('model').addEventListener('error',()=>{$('model-status').textContent='Model ni
 $('rotate').onclick=()=>{const m=$('model');const on=!m.hasAttribute('auto-rotate');m.toggleAttribute('auto-rotate',on);$('rotate').textContent='AUTO ROTATE / '+(on?'ON':'OFF');$('rotate').setAttribute('aria-pressed',String(on));};
 if(reduced.matches){$('model').removeAttribute('auto-rotate');$('rotate').textContent='AUTO ROTATE / OFF';$('rotate').setAttribute('aria-pressed','false');}
 function navigate(view){
- if(!['home','works','concept','gallery','contact'].includes(view))view='home';currentView=view;
+ if(!['home','works','concept','gallery','contact','machine'].includes(view))view='home';currentView=view;
  document.querySelectorAll('.view').forEach(s=>{s.hidden=s.id!==view;s.classList.toggle('active',s.id===view);});
  document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);if(b.dataset.view===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
- $('system-status').textContent='SYSTEM READY / '+view.toUpperCase();
+ 
  if(view==='works'&&!modelInitialized)selectObject(0);syncFilm();
 }
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{location.hash=b.dataset.view;});
@@ -45,11 +39,11 @@ window.addEventListener('hashchange',()=>navigate(location.hash.slice(1)));navig
 document.querySelectorAll('[data-image]').forEach(b=>b.onclick=()=>{$('large-image').src=b.dataset.image;$('large-image').alt=b.querySelector('img').alt;$('image-caption').textContent=$('large-image').alt;$('lightbox').showModal();});
 $('close-lightbox').onclick=()=>$('lightbox').close();$('lightbox').addEventListener('click',e=>{if(e.target===$('lightbox'))$('lightbox').close();});
 const tracks=['Gang_Starr_-_Mass_Appeal.mp3','A_Tribe_Called_Quest_-_1nce_Again_ft._Tammy_Lucas.mp3','Black_Moon_-_Enta_Da_Stage.mp3','Craig_Mack_-_Get_Down.mp3','Gang_Starr,_Total_-_Discipline.mp3','Miilkbones_-_Mindgamez.mp3','Redman_-_Pick_It_Up.mp3','Capone_N_Noreaga_-_Capone_Bone.mp3','Get_A_Hold.mp3','2_Thousand.mp3'];
-let track=0;const audio=$('audio');audio.volume=.35;
+let track=Math.floor(Math.random()*tracks.length);const audio=$('audio');audio.volume=.35;let musicWanted=true;
 function loadTrack(){audio.src=tracks[track];$('track-name').textContent=tracks[track].replace(/\.mp3$/,'').replaceAll('_',' ');}
 async function play(){try{await audio.play();}catch{$('audio-state').textContent='PLAYBACK UNAVAILABLE';}}
-function stepTrack(dir){track=(track+dir+tracks.length)%tracks.length;loadTrack();play();}
-$('play').onclick=()=>{if(audio.paused){if(!audio.getAttribute('src'))loadTrack();play();}else audio.pause();};
+function stepTrack(dir){musicWanted=true;track=(track+dir+tracks.length)%tracks.length;loadTrack();play();}
+$('play').onclick=()=>{musicWanted=audio.paused;if(musicWanted)play();else audio.pause();};
 $('next').onclick=()=>stepTrack(1);$('previous').onclick=()=>stepTrack(-1);audio.addEventListener('ended',()=>stepTrack(1));
 audio.addEventListener('play',()=>{$('play').textContent='Ⅱ PAUSE';$('audio-state').textContent='PLAYING';document.body.classList.add('playing');});
 audio.addEventListener('pause',()=>{$('play').textContent='▶ PLAY';$('audio-state').textContent='STANDBY';document.body.classList.remove('playing');});
@@ -58,3 +52,8 @@ $('volume').oninput=e=>{audio.volume=Number(e.target.value);};
 for(let i=0;i<28;i++){const bar=document.createElement('i');bar.style.setProperty('--delay',`${(i%7)*-.13}s`);$('eq').append(bar);}
 $('year').textContent=new Date().getFullYear();
 function clock(){$('clock').textContent='WARSAW / '+new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());}clock();setInterval(clock,1000);
+
+
+loadTrack();audio.play().catch(()=>{$('audio-state').textContent='TAP TO PLAY';});
+function startMusic(event){if(event.target.closest('.transport'))return;if(musicWanted&&audio.paused)play();}
+document.addEventListener('pointerdown',startMusic,{passive:true});document.addEventListener('keydown',startMusic);
