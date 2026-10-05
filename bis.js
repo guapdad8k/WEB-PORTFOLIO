@@ -27,7 +27,7 @@ $('model').addEventListener('error',()=>{$('model-status').textContent='Model ni
 $('rotate').onclick=()=>{const m=$('model');const on=!m.hasAttribute('auto-rotate');m.toggleAttribute('auto-rotate',on);$('rotate').textContent='AUTO ROTATE / '+(on?'ON':'OFF');$('rotate').setAttribute('aria-pressed',String(on));};
 if(reduced.matches){$('model').removeAttribute('auto-rotate');$('rotate').textContent='AUTO ROTATE / OFF';$('rotate').setAttribute('aria-pressed','false');}
 function navigate(view){
- if(!['home','works','concept','gallery','contact','machine'].includes(view))view='home';currentView=view;
+ if(!['home','new','works','concept','gallery','contact','machine'].includes(view))view='home';currentView=view;
  document.querySelectorAll('.view').forEach(s=>{s.hidden=s.id!==view;s.classList.toggle('active',s.id===view);});
  document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);if(b.dataset.view===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
  
