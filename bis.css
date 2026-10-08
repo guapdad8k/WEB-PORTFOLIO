@@ -1085,3 +1085,22 @@ dialog p{color:#708083;font:7px monospace}
     transform:translate(-50%,-50%) scaleX(2.15) !important;
   }
 }
+
+
+/* Transparent-looking spinning logo on dark header */
+.logo-link{
+  background:transparent !important;
+  mix-blend-mode:screen !important;
+  isolation:auto !important;
+}
+.logo-crop{
+  background:transparent !important;
+}
+.logo-crop:after{
+  display:none !important;
+}
+.logo-crop img{
+  background:transparent !important;
+  mix-blend-mode:screen !important;
+  filter:brightness(1.5) contrast(1.28) !important;
+}
