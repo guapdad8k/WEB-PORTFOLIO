@@ -147,36 +147,44 @@ header:after{
 .logo-link{
   position:absolute;
   z-index:8;
-  left:96px;
-  top:43px;
-  width:132px;
-  height:68px;
-  overflow:hidden;
+  left:86px;
+  top:34px;
+  width:160px;
+  height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
   mix-blend-mode:screen;
   filter:none;
-  opacity:.96;
+  opacity:1;
 }
 .logo-crop{
-  position:absolute;
-  inset:0;
+  position:relative;
   display:block;
-  overflow:hidden;
+  width:100%;
+  height:100%;
+  overflow:visible;
 }
 .logo-crop:after{
   content:"";
   position:absolute;
-  inset:0;
+  inset:6% 10%;
   pointer-events:none;
-  background:radial-gradient(circle at 50% 52%,rgba(208,226,216,.16),transparent 58%);
+  background:radial-gradient(circle at 50% 50%,rgba(208,226,216,.13),transparent 66%);
   mix-blend-mode:screen;
 }
 .logo-crop img{
-  position:absolute;
-  width:118%;
-  max-width:none;
-  left:-9%;
-  top:-59%;
-  filter:brightness(1.15) contrast(1.12);
+  position:relative;
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:100%;
+  object-fit:contain;
+  object-position:center;
+  left:auto;
+  top:auto;
+  filter:brightness(1.15) contrast(1.08);
 }
 .header-note{
   position:absolute;
@@ -1011,15 +1019,17 @@ dialog p{color:#708083;font:7px monospace}
 }
 @media(max-width:480px){
   .logo-link{
-    display:block;
-    left:16px;
-    top:30px;
-    width:102px;
-    height:54px;
+    display:flex;
+    left:14px;
+    top:20px;
+    width:118px;
+    height:68px;
   }
   .logo-crop img{
-    width:118%;
-    left:-9%;
-    top:-58%;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    left:auto;
+    top:auto;
   }
 }
