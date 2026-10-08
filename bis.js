@@ -90,7 +90,7 @@ const tracks=[
 ];
 let track=Math.floor(Math.random()*tracks.length);const audio=$('audio');audio.volume=.35;let musicWanted=true;
 function loadTrack(){audio.src=tracks[track].src;$('track-name').textContent=tracks[track].title;$('track-number').textContent=String(track+1).padStart(2,'0');}
-async function play(){try{initAnalyser();if(audioContext?.state==='suspended')await audioContext.resume();await audio.play();}catch{$('audio-state').textContent='PLAYBACK UNAVAILABLE';}}
+async function play(){try{initAnalyser();if(audioContext?.state==='suspended')audioContext.resume().catch(()=>{});await audio.play();}catch(error){$('audio-state').textContent=error.name==='NotAllowedError'?'TAP TO PLAY':'PLAYBACK UNAVAILABLE';}}
 function stepTrack(dir){musicWanted=true;track=(track+dir+tracks.length)%tracks.length;loadTrack();play();}
 $('play').onclick=()=>{musicWanted=audio.paused;if(musicWanted)play();else audio.pause();};
 $('next').onclick=()=>stepTrack(1);$('previous').onclick=()=>stepTrack(-1);audio.addEventListener('ended',()=>stepTrack(1));
@@ -128,6 +128,11 @@ function clock(){$('clock').textContent='WARSAW / '+new Intl.DateTimeFormat('en-
 
 
 loadTrack();audio.play().catch(()=>{$('audio-state').textContent='TAP TO PLAY';});
-function startMusic(event){if(event.target.closest('.transport'))return;if(musicWanted&&audio.paused)play();}
+function startMusic(event){
+ if(!musicWanted)return;
+ initAnalyser();if(audioContext?.state==='suspended')audioContext.resume().catch(()=>{});
+ if(event.target.closest('.transport'))return;
+ if(audio.paused)play();
+}
 document.addEventListener('pointerdown',startMusic,{passive:true});document.addEventListener('keydown',startMusic);
 
