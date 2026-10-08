@@ -1033,3 +1033,55 @@ dialog p{color:#708083;font:7px monospace}
     top:auto;
   }
 }
+
+
+/* Spinning logo — compensate for the GIF's narrow rotating canvas */
+.logo-link{
+  left:78px !important;
+  top:31px !important;
+  width:210px !important;
+  height:90px !important;
+  overflow:visible !important;
+  display:block !important;
+  mix-blend-mode:normal !important;
+}
+.logo-crop{
+  position:relative !important;
+  display:block !important;
+  width:210px !important;
+  height:90px !important;
+  overflow:visible !important;
+}
+.logo-crop img{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  width:auto !important;
+  height:88px !important;
+  max-width:none !important;
+  object-fit:unset !important;
+  transform:translate(-50%,-50%) scaleX(2.35) !important;
+  transform-origin:center center !important;
+  filter:brightness(1.45) contrast(1.18) !important;
+  opacity:1 !important;
+}
+.logo-crop:after{
+  inset:-8px -24px !important;
+  background:radial-gradient(ellipse at center,rgba(205,225,216,.18),transparent 68%) !important;
+}
+@media(max-width:480px){
+  .logo-link{
+    left:14px !important;
+    top:18px !important;
+    width:150px !important;
+    height:68px !important;
+  }
+  .logo-crop{
+    width:150px !important;
+    height:68px !important;
+  }
+  .logo-crop img{
+    height:66px !important;
+    transform:translate(-50%,-50%) scaleX(2.15) !important;
+  }
+}
