@@ -14,7 +14,11 @@ const objects = [
  ['RPS13 / 180SX','REAR WING','WINGxS13.glb'],
  ['RPS13 / 180SX','ROOF WING','S13ROOFWING.glb'],
  ['RPS13 / 180SX','DOOR HANDLE','S13SWITCHDRIVERV130.glb'],
- ['SUBARU GC8','TWEETER MOUNT','gc8tweeterV15.glb']
+ ['SUBARU GC8','TWEETER MOUNT','gc8tweeterV15.glb'],
+ ['FIAT 1.4 T-JET','FLANGE','Flansza+1.4+tjet.glb'],
+ ['LEXUS SPORTCROSS','TRIM / OVERLAY','SPORTCROSS+NAKLADKA.glb'],
+ ['RPS13 / 180SX','AIR INTAKE','WLOTS13_1.glb'],
+ ['TOYOTA 1G','INTAKE MANIFOLD','kolkektor+1g+2.glb']
 ];
 let modelInitialized=false;
 function selectObject(index){
