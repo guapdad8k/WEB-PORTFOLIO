@@ -1592,3 +1592,41 @@ model-viewer{
 .new-project-note p{margin-top:0}
 .network-links{margin-top:0}
 footer{justify-content:flex-start}
+
+/* Larger header identity and readable navigation at every viewport. */
+header{height:170px}
+.logo-link{
+ left:54px!important;top:12px!important;
+ width:280px!important;height:140px!important;
+}
+.logo-crop{width:100%!important;height:100%!important}
+.logo-crop img{object-fit:contain!important;transform:none!important}
+nav{
+ height:auto;min-height:56px;gap:6px;padding:8px 16px;
+ justify-content:center;flex-wrap:wrap;overflow:visible;
+}
+nav button{
+ flex:0 0 auto;min-width:112px;min-height:40px;height:auto;
+ padding:10px 12px;font:600 11px/1.25 monospace;
+ letter-spacing:1px;color:#b6c5be;
+}
+nav button:hover{color:#f1f4ea;border-color:#667d75}
+nav button.active{color:#0d1314}
+@media(max-width:900px){
+ header{height:150px}
+ .logo-link{left:30px!important;top:10px!important;width:250px!important;height:122px!important}
+ nav{padding:8px;gap:5px}
+ nav button{min-width:102px}
+}
+@media(max-width:600px){
+ header{height:136px}
+ .logo-link{left:18px!important;top:7px!important;width:220px!important;height:110px!important}
+ nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ nav button{min-width:0;width:100%;min-height:44px;padding:10px 5px;font-size:10px;letter-spacing:.5px}
+}
+@media(max-height:520px) and (orientation:landscape){
+ header{height:116px}
+ .logo-link{left:22px!important;top:5px!important;width:200px!important;height:92px!important}
+ nav{display:flex;flex-wrap:wrap;min-height:50px}
+ nav button{min-width:96px;min-height:38px;font-size:10px}
+}
