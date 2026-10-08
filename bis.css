@@ -1584,3 +1584,11 @@ model-viewer{
 .network-original>span{font:9px monospace;letter-spacing:1px}
 .network-links .network-logo:hover,.network-links .network-logo:focus-visible{color:#f4f2df;background:#1a2828;border-color:#c7d6c9}
 .network-links .network-logo:focus-visible{outline:2px solid #c7d6c9;outline-offset:3px}
+
+/* Remove decorative copy while retaining the frame and functional controls. */
+.panel-label{justify-content:flex-end}
+.receiver-bottom{justify-content:space-between}
+.receiver-face{padding-top:4px}
+.new-project-note p{margin-top:0}
+.network-links{margin-top:0}
+footer{justify-content:flex-start}
