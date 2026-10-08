@@ -851,43 +851,6 @@ model-viewer{display:block;width:100%;height:350px;--poster-color:transparent}
 }
 .panel-label span{color:#273637}
 .audio-body{display:flex;align-items:center;gap:10px}
-.speaker{
-  width:46px;height:46px;flex-shrink:0;
-  border:1px solid #536466;
-  border-radius:50%;
-  background:
-    radial-gradient(circle,#0b1112 0 27%,#233033 28% 39%,#081011 40% 55%,#536364 56% 58%,#0c1112 59%);
-}
-.deck{flex:1;min-width:0}
-.display{
-  height:37px;
-  padding:6px 8px;
-  color:#c7d6ca;
-  background:#050909;
-  border:1px solid #334143;
-  font:7px monospace;
-  overflow:hidden;
-}
-.display>span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.eq{display:flex;gap:2px;align-items:flex-end;height:10px;margin-top:4px}
-.eq i{width:4px;height:1px;background:#c7d6ca}
-.playing .eq i{animation:eq .45s infinite alternate;animation-delay:var(--delay)}
-@keyframes eq{to{height:9px}}
-.transport{display:flex;align-items:center;gap:3px;margin-top:5px}
-.transport button{
-  min-height:24px;
-  padding:3px 7px;
-  color:#809093;
-  border:1px solid #334143;
-  background:#0a1112;
-  font:7px monospace;
-}
-.transport button:hover{color:#d6e2d8;border-color:#6c7f7f}
-.transport label{
-  display:flex;align-items:center;gap:5px;
-  margin-left:auto;color:#536466;font:7px monospace;
-}
-.transport input{width:68px;accent-color:#c7d6ca}
 
 .network{
   padding-left:18px;
@@ -1545,3 +1508,36 @@ model-viewer{
     height:54px !important;
   }
 }
+
+
+/* Carrozzeria fluorescent display and illuminated track selector. */
+.boombox{padding-right:18px}
+.carrozzeria.transport{display:block;margin:0;padding:12px 14px 10px;border:1px solid #435052;border-radius:8px;background:linear-gradient(175deg,#273234,#080c0e 28%,#020405 74%,#1c272a);box-shadow:inset 0 1px 1px #7b8787,0 8px 18px #0007}
+.receiver-brand{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;color:#b0bbbc}
+.receiver-brand b{font:italic bold 15px Arial,sans-serif;letter-spacing:-.5px}
+.receiver-brand>span{font:5px monospace;letter-spacing:1px}
+.receiver-face{display:grid;grid-template-columns:minmax(0,1fr) 108px;gap:12px;align-items:center}
+.receiver-screen{min-width:0;padding:8px;background:#00090e;border:1px solid #142c34;border-radius:4px;box-shadow:inset 0 0 18px #000,0 0 8px #00b9ff12;color:#65deff}
+.receiver-readout{display:flex;align-items:center;gap:8px;font:8px monospace;text-shadow:0 0 5px #009dff}
+#track-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.receiver-readout time{white-space:nowrap}
+.receiver-visual{position:relative;margin-top:7px;aspect-ratio:640/166;overflow:hidden;background:#000}
+.receiver-visual video,.receiver-visual canvas{display:block;width:100%;height:100%;object-fit:cover}
+.receiver-visual [hidden]{display:none}
+.receiver-visual:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,#0003 2px 3px);box-shadow:inset 0 0 12px #00131c}
+.receiver-scale{display:flex;justify-content:space-between;margin-top:5px;color:#2288a4;font:6px monospace}
+.receiver-selector{text-align:center}
+.selector-labels{height:17px;display:flex;gap:7px;align-items:center;justify-content:center;color:#ef8f57;font:7px monospace;text-shadow:0 0 4px #f96524}
+.selector-labels i{width:15px;height:6px;border:1px solid #ef8f57;border-radius:2px;transform:rotate(-8deg);box-shadow:0 0 4px #f9652444}
+.selector-ring{height:80px;position:relative;display:flex;align-items:center;justify-content:center;gap:0;background:radial-gradient(circle, #020607 0 44%,transparent 45%),conic-gradient(from 38deg,#64ffcc 0 55deg,#08392e 56deg 96deg,#64ffcc 97deg 192deg,#08392e 193deg 234deg,#64ffcc 235deg 285deg,#08392e 286deg);border-radius:50%;width:80px;margin:0 auto;box-shadow:0 0 8px #27edb52b,inset 0 0 5px #000}
+.carrozzeria .selector-ring button{position:relative;min-width:28px;min-height:44px;padding:0;background:#030909;border:0;color:#63ffd1;font:bold 25px monospace;text-shadow:0 0 6px #00e7a8;border-radius:10px}
+.carrozzeria .selector-ring #play{min-width:24px;font-size:13px}
+.carrozzeria button:hover{filter:brightness(1.5)}
+.carrozzeria button:focus-visible{outline:2px solid #b8fff0;outline-offset:3px}
+.selector-caption{display:block;margin-top:8px;color:#40be98;font:6px monospace;letter-spacing:1px}
+.receiver-bottom{display:flex;align-items:center;gap:8px;margin-top:9px}
+.carrozzeria .receiver-bottom button{min-height:28px;padding:4px 6px;color:#62ffc6;background:#03090a;border:1px solid #173b32;font:7px monospace;text-shadow:0 0 4px #18c585}
+.receiver-presets{flex:1;color:#43ba8c;font:9px monospace;text-align:center;text-shadow:0 0 4px #26cf8d}
+.carrozzeria .receiver-bottom label{width:auto;margin-left:auto;display:flex;align-items:center;gap:6px;color:#53be9a;font:7px monospace}
+.carrozzeria .receiver-bottom input{width:65px;accent-color:#65eabd}
+@media(max-width:600px){.boombox{padding-right:0}.carrozzeria.transport{padding:10px 8px}.receiver-face{grid-template-columns:minmax(0,1fr) 82px;gap:6px}.receiver-presets{font-size:7px}.receiver-brand>span{font-size:4px}.receiver-readout{font-size:7px;gap:5px}.carrozzeria .receiver-bottom input{width:55px}.selector-caption{font-size:5px}}

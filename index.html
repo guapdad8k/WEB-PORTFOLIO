@@ -143,18 +143,25 @@
     <div class="lower">
       <section class="boombox">
         <div class="panel-label">AUDIO SIGNAL <span id="audio-state" role="status">STANDBY</span></div>
-        <div class="audio-body">
-          <div class="speaker"></div>
-          <div class="deck">
-            <div class="display"><span id="track-name">SELECTING TRACK…</span><div id="eq" class="eq" aria-hidden="true"></div></div>
-            <div class="transport">
-              <button id="previous" aria-label="Poprzedni utwór">|◀</button>
-              <button id="play">▶ PLAY</button>
-              <button id="next" aria-label="Następny utwór">▶|</button>
-              <label>VOL <input id="volume" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="Głośność"></label>
+        <div class="carrozzeria transport">
+          <div class="receiver-brand"><b>carrozzeria</b><span>PIONEER / MULTI-CD CONTROL</span></div>
+          <div class="receiver-face">
+            <div class="receiver-screen">
+              <div class="receiver-readout"><span>CD <b id="track-number">01</b></span><span id="track-name">SELECTING TRACK…</span><time id="track-time">00:00</time></div>
+              <div class="receiver-visual"><video id="receiver-film" src="!YTDown.com_YouTube_Media_-IGxr8hUtL8_DEH-919-Pioneer-Carrozeria_001_360p.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video><canvas id="eq" width="640" height="166" aria-hidden="true" hidden></canvas></div>
+              <div class="receiver-scale" aria-hidden="true"><span>63</span><span>160</span><span>400</span><span>1k</span><span>2.5k</span><span>6.3k</span><span>16k</span></div>
+            </div>
+            <div class="receiver-selector">
+              <div class="selector-labels" aria-hidden="true"><span>PWRFL</span><i></i><i></i></div>
+              <div class="selector-ring">
+                <button id="previous" aria-label="Poprzedni utwór">≪</button>
+                <button id="play" aria-label="Odtwórz lub wstrzymaj" aria-pressed="false">▶</button>
+                <button id="next" aria-label="Następny utwór">≫</button>
+              </div>
+              <span class="selector-caption">TRACK / SEARCH</span>
             </div>
           </div>
-          <div class="speaker"></div>
+          <div class="receiver-bottom"><button id="visual-mode" aria-pressed="false">DISP / MOVIE</button><span class="receiver-presets" aria-hidden="true">1　 2　 3　 4　 5　 6</span><label>VOL <input id="volume" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="Głośność"></label></div>
         </div>
         <audio id="audio" preload="none"></audio>
       </section>
@@ -176,3 +183,4 @@
 <dialog id="lightbox"><button id="close-lightbox" aria-label="Zamknij zdjęcie">CLOSE ×</button><img id="large-image" alt=""><p id="image-caption"></p></dialog>
 </body>
 </html>
+
