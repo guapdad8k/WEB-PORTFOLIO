@@ -1689,3 +1689,33 @@ nav button.active{color:#0d1314}
 .new-project-images figcaption{font-size:6px;letter-spacing:.7px;left:9px;bottom:10px;right:9px}
 @media(max-width:1000px){.new-entry-text{grid-template-columns:1fr}.new-project-note p{max-width:none}.new-project-images{gap:16px}}
 @media(max-width:480px){.new-project-images{grid-template-columns:1fr;gap:16px}.new-project-images figcaption{font-size:7px}}
+
+/* J-1: profile / description / rear detail as one unframed composition. */
+.new-entry-text.j1-clean{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr) minmax(0,.85fr);
+ gap:0;align-items:center;padding:0;min-height:0;
+ border-top:0;background:#040708;
+}
+.j1-clean .j1-profile,.j1-clean .j1-detail{position:relative;min-width:0;overflow:hidden}
+.j1-clean .j1-profile{aspect-ratio:1/1}
+.j1-clean .j1-profile img{display:block;width:100%;height:100%;object-fit:contain;filter:saturate(.4) contrast(1.1) brightness(.8)}
+.j1-clean .j1-profile:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 52%,#040708 100%)}
+.j1-clean .new-project-note{position:relative;z-index:1;padding:28px 16px 28px 0;min-width:0}
+.j1-clean .new-project-note p{border:0;padding:0;margin:0;min-height:0;max-width:none;color:#c4d1c7;font:clamp(11px,1.05vw,13px)/1.85 monospace}
+.j1-clean .j1-detail{align-self:stretch;display:flex;align-items:center}
+.j1-clean .j1-detail img{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.38) contrast(1.15) brightness(.75)}
+.j1-clean .j1-detail:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#040708,transparent 35%),linear-gradient(0deg,#040708,transparent 25%,transparent 80%,#040708)}
+@media(max-width:900px){
+ .new-entry-text.j1-clean{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .j1-clean .new-project-note{padding:24px 24px 24px 0}
+ .j1-clean .j1-detail{grid-column:1/-1;aspect-ratio:16/7}
+ .j1-clean .j1-detail img{object-fit:contain}
+ .j1-clean .j1-detail:after{background:linear-gradient(0deg,#040708,transparent 25%,transparent 75%,#040708)}
+}
+@media(max-width:600px){
+ .new-entry-text.j1-clean{grid-template-columns:1fr}
+ .j1-clean .j1-profile:after{background:linear-gradient(0deg,#040708,transparent 35%)}
+ .j1-clean .new-project-note{padding:0 24px 28px}
+ .j1-clean .new-project-note p{font-size:12px}
+ .j1-clean .j1-detail{aspect-ratio:1425/944}
+}
