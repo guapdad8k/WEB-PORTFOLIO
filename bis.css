@@ -1793,15 +1793,23 @@ nav button.active{color:#0d1314}
 }
 
 @font-face{
- font-family:'Moon Get';src:url('fonts/moon-get-heavy.ttf') format('truetype');
+ font-family:'Milligram Macro';src:url('fonts/milligram-macro-regular-trial.ttf') format('truetype');
+ font-weight:400;font-style:normal;font-display:swap;
+}
+@font-face{
+ font-family:'Milligram Macro';src:url('fonts/milligram-macro-bold-trial.ttf') format('truetype');
+ font-weight:700;font-style:normal;font-display:swap;
+}
+@font-face{
+ font-family:'Milligram Macro';src:url('fonts/milligram-macro-heavy-trial.ttf') format('truetype');
  font-weight:900;font-style:normal;font-display:swap;
 }
-nav button,
+nav button,.teasers>button>span,.teaser-new-visual,
 #new h1,#works h1,#concept h1,#gallery h1,
 #works .object-menu button,#works .model-meta,#works .model-tools,
 #concept .photo>span,#gallery .archive-controls button{
- font-family:'Moon Get',Arial,sans-serif!important;
- font-weight:900;font-synthesis:none;
+ font-family:'Milligram Macro',Arial,sans-serif!important;
+ font-weight:700;font-synthesis:none;
 }
 nav button{letter-spacing:.4px;font-size:11px}
 #new h1,#works h1,#concept h1{letter-spacing:-1px;line-height:1.15}
@@ -1821,3 +1829,11 @@ main{display:block!important}
 .receiver-bottom{justify-content:flex-end}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:600px){nav button{font-size:10px}#new h1,#works h1,#concept h1{font-size:clamp(28px,9vw,44px)}}
+
+/* Milligram hierarchy across both navigation levels. */
+#new h1,#works h1,#concept h1,#gallery h1{font-weight:900;letter-spacing:0}
+.teasers>button>span{font-weight:400;line-height:1.55}
+.teasers>button>span>b{font-family:'Milligram Macro',Arial,sans-serif;font-weight:900;letter-spacing:.5px}
+.teasers>button>span>i{font-family:'Milligram Macro',Arial,sans-serif;font-weight:700;letter-spacing:.5px}
+.teaser-new-visual span{font-family:'Milligram Macro',Arial,sans-serif;font-weight:900}
+#works .object-menu button small{font-family:'Milligram Macro',Arial,sans-serif;font-weight:400}
