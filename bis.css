@@ -1791,3 +1791,33 @@ nav button.active{color:#0d1314}
  mix-blend-mode:screen;
  filter:grayscale(1) sepia(.25) brightness(1.5) contrast(1.28);
 }
+
+@font-face{
+ font-family:'Moon Get';src:url('fonts/moon-get-heavy.ttf') format('truetype');
+ font-weight:900;font-style:normal;font-display:swap;
+}
+nav button,
+#new h1,#works h1,#concept h1,#gallery h1,
+#works .object-menu button,#works .model-meta,#works .model-tools,
+#concept .photo>span,#gallery .archive-controls button{
+ font-family:'Moon Get',Arial,sans-serif!important;
+ font-weight:900;font-synthesis:none;
+}
+nav button{letter-spacing:.4px;font-size:11px}
+#new h1,#works h1,#concept h1{letter-spacing:-1px;line-height:1.15}
+#gallery .archive-heading h1{font-size:25px;letter-spacing:0}
+#works .object-menu button small{font-family:Arial,sans-serif;font-weight:400}
+main{display:block!important}
+.workspace{width:100%;min-width:0}
+.receiver-readout{justify-content:center}
+#track-name{text-align:center}
+.receiver-selector{display:flex;flex-direction:column;align-items:center;gap:8px}
+.carrozzeria .receiver-selector #visual-mode{
+ display:block;min-height:24px;min-width:60px;width:66px;
+ padding:4px 8px;margin:0;border:1px solid #173b32;border-radius:2px;
+ background:#03090a;color:#62ffc6;font:7px/1.2 monospace;
+ letter-spacing:1px;text-shadow:0 0 4px #18c585;
+}
+.receiver-bottom{justify-content:flex-end}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:600px){nav button{font-size:10px}#new h1,#works h1,#concept h1{font-size:clamp(28px,9vw,44px)}}

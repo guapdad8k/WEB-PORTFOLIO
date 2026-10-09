@@ -116,7 +116,7 @@ const tracks=[
   }
 ];
 let track=Math.floor(Math.random()*tracks.length);const audio=$('audio');audio.volume=.35;let musicWanted=true;
-function loadTrack(){audio.src=tracks[track].src;$('track-name').textContent=tracks[track].title;$('track-number').textContent=String(track+1).padStart(2,'0');}
+function loadTrack(){audio.src=tracks[track].src;$('track-name').textContent=tracks[track].title;}
 async function play(){try{initAnalyser();if(audioContext?.state==='suspended')audioContext.resume().catch(()=>{});await audio.play();}catch(error){$('audio-state').textContent=error.name==='NotAllowedError'?'TAP TO PLAY':'PLAYBACK UNAVAILABLE';}}
 function stepTrack(dir){musicWanted=true;track=(track+dir+tracks.length)%tracks.length;loadTrack();play();}
 $('play').onclick=()=>{musicWanted=audio.paused;if(musicWanted)play();else audio.pause();};
@@ -133,7 +133,7 @@ function initAnalyser(){
  try{audioContext=new AudioContextClass();const source=audioContext.createMediaElementSource(audio);analyser=audioContext.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=.78;source.connect(analyser);analyser.connect(audioContext.destination);spectrum=new Uint8Array(analyser.frequencyBinCount);}catch{audioContext=undefined;}
 }
 let spectrumMode=reduced.matches;
-function setVisualMode(){ $('eq').hidden=!spectrumMode;$('receiver-film').hidden=spectrumMode;$('visual-mode').textContent=spectrumMode?'DISP / SPECTRUM':'DISP / MOVIE';$('visual-mode').setAttribute('aria-pressed',String(spectrumMode));if(spectrumMode||audio.paused||reduced.matches)$('receiver-film').pause();else $('receiver-film').play().catch(()=>{});}
+function setVisualMode(){ $('eq').hidden=!spectrumMode;$('receiver-film').hidden=spectrumMode;$('visual-mode').textContent='DISP';$('visual-mode').setAttribute('aria-label',spectrumMode?'Zmień wyświetlacz z EQ na animację':'Zmień wyświetlacz z animacji na EQ');$('visual-mode').setAttribute('aria-pressed',String(spectrumMode));if(spectrumMode||audio.paused||reduced.matches)$('receiver-film').pause();else $('receiver-film').play().catch(()=>{});}
 $('visual-mode').onclick=()=>{spectrumMode=!spectrumMode;setVisualMode();};setVisualMode();
 const eqContext=$('eq').getContext('2d');let lastFrame=0;
 function drawSpectrum(now){
@@ -149,9 +149,9 @@ function drawSpectrum(now){
  eqContext.shadowBlur=0;
 }
 requestAnimationFrame(drawSpectrum);
-audio.addEventListener('timeupdate',()=>{const t=Math.floor(audio.currentTime||0);$('track-time').textContent=String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');});
+
 $('year').textContent=new Date().getFullYear();
-function clock(){$('clock').textContent='WARSAW / '+new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());}clock();setInterval(clock,1000);
+
 
 
 loadTrack();audio.play().catch(()=>{$('audio-state').textContent='TAP TO PLAY';});
