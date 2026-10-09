@@ -1855,6 +1855,5 @@ nav button,#home .teasers>button>span,#home .teasers>button>span>b,#home .teaser
 @media(max-width:600px){#new .new-entry-copy h1{letter-spacing:-2.5px}.j1-clean .j1-profile:after{background:linear-gradient(0deg,#040708,transparent 60%)}.j1-clean .new-project-note{padding:12px 24px 28px;box-shadow:0 -24px 30px #040708,0 24px 30px #040708}.j1-clean .new-project-note p{font-size:15px}}
 
 /* Use text-friendly proportions for the longer J-1 description. */
-@font-face{font-family:'Milligram Text';src:url('fonts/milligram-macro-regular-trial.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-#new .j1-clean .new-project-note p{font-family:'Milligram Text',Arial,sans-serif;font-weight:400;font-synthesis:none;font-size:clamp(13px,1.15vw,15px);line-height:1.8;letter-spacing:.1px;overflow-wrap:break-word}
+#new .j1-clean .new-project-note p{font-family:Arial,Helvetica,sans-serif;font-weight:400;font-synthesis:none;font-size:clamp(13px,1.15vw,15px);line-height:1.8;letter-spacing:.1px;overflow-wrap:break-word}
 @media(max-width:600px){#new .j1-clean .new-project-note p{font-size:14px;line-height:1.75}}
