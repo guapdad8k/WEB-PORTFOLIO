@@ -1792,23 +1792,14 @@ nav button.active{color:#0d1314}
  filter:grayscale(1) sepia(.25) brightness(1.5) contrast(1.28);
 }
 
-@font-face{
- font-family:'Milligram Macro';src:url('fonts/milligram-macro-regular-trial.ttf') format('truetype');
- font-weight:400;font-style:normal;font-display:swap;
-}
-@font-face{
- font-family:'Milligram Macro';src:url('fonts/milligram-macro-bold-trial.ttf') format('truetype');
- font-weight:700;font-style:normal;font-display:swap;
-}
-@font-face{
- font-family:'Milligram Macro';src:url('fonts/milligram-macro-heavy-trial.ttf') format('truetype');
- font-weight:900;font-style:normal;font-display:swap;
-}
+
+
+
 nav button,.teasers>button>span,.teaser-new-visual,
 #new h1,#works h1,#concept h1,#gallery h1,
 #works .object-menu button,#works .model-meta,#works .model-tools,
 #concept .photo>span,#gallery .archive-controls button{
- font-family:'Milligram Macro',Arial,sans-serif!important;
+ font-family:'Luxerie',Arial,sans-serif!important;
  font-weight:700;font-synthesis:none;
 }
 nav button{letter-spacing:.4px;font-size:11px}
@@ -1833,13 +1824,20 @@ main{display:block!important}
 /* Milligram hierarchy across both navigation levels. */
 #new h1,#works h1,#concept h1,#gallery h1{font-weight:900;letter-spacing:0}
 .teasers>button>span{font-weight:400;line-height:1.55}
-.teasers>button>span>b{font-family:'Milligram Macro',Arial,sans-serif;font-weight:900;letter-spacing:.5px}
-.teasers>button>span>i{font-family:'Milligram Macro',Arial,sans-serif;font-weight:700;letter-spacing:.5px}
-.teaser-new-visual span{font-family:'Milligram Macro',Arial,sans-serif;font-weight:900}
-#works .object-menu button small{font-family:'Milligram Macro',Arial,sans-serif;font-weight:400}
+.teasers>button>span>b{font-family:'Luxerie',Arial,sans-serif;font-weight:900;letter-spacing:.5px}
+.teasers>button>span>i{font-family:'Luxerie',Arial,sans-serif;font-weight:700;letter-spacing:.5px}
+.teaser-new-visual span{font-family:'Luxerie',Arial,sans-serif;font-weight:900}
+#works .object-menu button small{font-family:'Luxerie',Arial,sans-serif;font-weight:400}
 
 /* Explicit card typography; keep labels readable at every breakpoint. */
-#home .teasers>button>span,#home .teasers>button>span>b,#home .teasers>button>span>i{font-family:'Milligram Macro',Arial,sans-serif!important;font-synthesis:none}
+#home .teasers>button>span,#home .teasers>button>span>b,#home .teasers>button>span>i{font-family:'Luxerie',Arial,sans-serif!important;font-synthesis:none}
 #home .teasers>button>span{font-weight:400!important;font-size:10px;line-height:1.5}
 #home .teasers>button>span>b{font-weight:900!important;font-size:13px;letter-spacing:.3px;line-height:1.2;margin-bottom:6px}
 #home .teasers>button>span>i{font-weight:700!important;font-size:9px}
+
+@font-face{font-family:'Luxerie';src:url('fonts/luxerie.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Luxerie Display';src:url('fonts/luxerie-display.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+nav button,#home .teasers>button>span,#home .teasers>button>span>b,#home .teasers>button>span>i,
+#works .object-menu button,#works .object-menu button small,#works .model-meta,#works .model-tools,
+#concept .photo>span,#gallery .archive-controls button,.teaser-new-visual span{font-family:'Luxerie',Arial,sans-serif!important;font-weight:400!important;font-synthesis:none}
+#new h1,#works h1,#concept h1,#gallery h1{font-family:'Luxerie Display','Luxerie',Arial,sans-serif!important;font-weight:400!important;font-synthesis:none}
