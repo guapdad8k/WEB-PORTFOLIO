@@ -1719,3 +1719,58 @@ nav button.active{color:#0d1314}
  .j1-clean .new-project-note p{font-size:12px}
  .j1-clean .j1-detail{aspect-ratio:1425/944}
 }
+
+/* Centered rotating credentials, matching the existing Janko animation. */
+.lower .network{
+ display:flex;align-items:center;justify-content:center;
+ padding:18px 12px 18px 24px;min-width:0;
+}
+.network .network-links{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ align-items:center;justify-items:center;gap:10px;
+ width:100%;max-width:430px;margin:0;
+}
+.network-links .network-logo,.network-links .network-logo:last-child{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:14px;min-width:0;min-height:134px;width:100%;
+ padding:12px 4px;border:0;border-radius:0;
+ background:transparent;box-shadow:none;color:#d6dace;
+ perspective:600px;
+}
+.network-links .network-logo:hover,.network-links .network-logo:focus-visible{
+ border:0;background:transparent;color:#f4f2df;
+}
+.network-logo .network-mark{
+ display:block;position:relative;width:82px;height:64px;
+ flex:none;font:inherit;letter-spacing:normal;
+}
+.network-logo .network-link-name{
+ display:block;min-height:28px;margin:0;text-align:center;
+ font:9px/1.5 monospace;letter-spacing:.8px;color:#c4d1c7;
+}
+.network-turn{
+ position:absolute;inset:0;display:block;
+ transform-style:preserve-3d;animation:credential-spin 6s linear infinite;
+}
+.network-layer{
+ position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+ transform:translateZ(var(--logo-depth));color:#66716a;
+}
+.network-layer.network-front{color:#d6dace}
+.network-layer svg{display:block;width:74px;height:54px;flex:none;filter:drop-shadow(0 0 4px #dce4d422)}
+.network-original .network-mark img{
+ display:block;width:100%;height:100%;object-fit:contain;
+ filter:grayscale(1) sepia(.25) brightness(1.3);mix-blend-mode:screen;
+}
+@keyframes credential-spin{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
+@media(max-width:820px){
+ .lower .network{padding:20px 0;margin-top:14px}
+ .network .network-links{max-width:460px}
+}
+@media(max-width:480px){
+ .network .network-links{gap:6px}
+ .network-logo .network-mark{width:74px;height:60px}
+ .network-links .network-logo{min-height:124px}
+ .network-logo .network-link-name{font-size:8px;letter-spacing:.5px}
+}
+@media(prefers-reduced-motion:reduce){.network-turn{animation:none}}
