@@ -1799,7 +1799,7 @@ nav button,.teasers>button>span,.teaser-new-visual,
 #new h1,#works h1,#concept h1,#gallery h1,
 #works .object-menu button,#works .model-meta,#works .model-tools,
 #concept .photo>span,#gallery .archive-controls button{
- font-family:'Luxerie',Arial,sans-serif!important;
+ font-family:'HighCruiser',Arial,sans-serif!important;
  font-weight:700;font-synthesis:none;
 }
 nav button{letter-spacing:.4px;font-size:11px}
@@ -1824,20 +1824,32 @@ main{display:block!important}
 /* Milligram hierarchy across both navigation levels. */
 #new h1,#works h1,#concept h1,#gallery h1{font-weight:900;letter-spacing:0}
 .teasers>button>span{font-weight:400;line-height:1.55}
-.teasers>button>span>b{font-family:'Luxerie',Arial,sans-serif;font-weight:900;letter-spacing:.5px}
-.teasers>button>span>i{font-family:'Luxerie',Arial,sans-serif;font-weight:700;letter-spacing:.5px}
-.teaser-new-visual span{font-family:'Luxerie',Arial,sans-serif;font-weight:900}
-#works .object-menu button small{font-family:'Luxerie',Arial,sans-serif;font-weight:400}
+.teasers>button>span>b{font-family:'HighCruiser',Arial,sans-serif;font-weight:900;letter-spacing:.5px}
+.teasers>button>span>i{font-family:'HighCruiser',Arial,sans-serif;font-weight:700;letter-spacing:.5px}
+.teaser-new-visual span{font-family:'HighCruiser',Arial,sans-serif;font-weight:900}
+#works .object-menu button small{font-family:'HighCruiser',Arial,sans-serif;font-weight:400}
 
 /* Explicit card typography; keep labels readable at every breakpoint. */
-#home .teasers>button>span,#home .teasers>button>span>b,#home .teasers>button>span>i{font-family:'Luxerie',Arial,sans-serif!important;font-synthesis:none}
+#home .teasers>button>span,#home .teasers>button>span>b,#home .teasers>button>span>i{font-family:'HighCruiser',Arial,sans-serif!important;font-synthesis:none}
 #home .teasers>button>span{font-weight:400!important;font-size:10px;line-height:1.5}
 #home .teasers>button>span>b{font-weight:900!important;font-size:13px;letter-spacing:.3px;line-height:1.2;margin-bottom:6px}
 #home .teasers>button>span>i{font-weight:700!important;font-size:9px}
 
-@font-face{font-family:'Luxerie';src:url('fonts/luxerie.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Luxerie Display';src:url('fonts/luxerie-display.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+
+
 nav button,#home .teasers>button>span,#home .teasers>button>span>b,#home .teasers>button>span>i,
 #works .object-menu button,#works .object-menu button small,#works .model-meta,#works .model-tools,
-#concept .photo>span,#gallery .archive-controls button,.teaser-new-visual span{font-family:'Luxerie',Arial,sans-serif!important;font-weight:400!important;font-synthesis:none}
-#new h1,#works h1,#concept h1,#gallery h1{font-family:'Luxerie Display','Luxerie',Arial,sans-serif!important;font-weight:400!important;font-synthesis:none}
+#concept .photo>span,#gallery .archive-controls button,.teaser-new-visual span{font-family:'HighCruiser',Arial,sans-serif!important;font-weight:400!important;font-synthesis:none}
+#new h1,#works h1,#concept h1,#gallery h1{font-family:'HighCruiser',Arial,sans-serif!important;font-weight:400!important;font-synthesis:none}
+
+@font-face{font-family:'HighCruiser';src:url('fonts/highcruiser.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+/* J-1 title follows the original home hero typography. */
+#new .new-entry-copy h1{font-family:Arial Black,Arial,sans-serif!important;font-weight:900!important;font-synthesis:weight;line-height:.84;letter-spacing:-3px}
+#new .new-entry-copy h1 em{font-family:inherit;font-weight:900}
+.j1-clean .j1-profile img{object-fit:cover;transform:scale(1.16);transform-origin:center}
+.j1-clean .j1-detail img{transform:scale(1.13);transform-origin:center}
+.j1-clean .j1-profile:after{background:linear-gradient(90deg,transparent 25%,#04070888 62%,#040708 100%)}
+.j1-clean .j1-detail:after{background:linear-gradient(90deg,#040708 0%,#040708aa 20%,transparent 55%),linear-gradient(0deg,#040708,transparent 30%,transparent 75%,#040708)}
+.j1-clean .new-project-note{z-index:2;padding:30px 18px;text-align:center;background:#040708;box-shadow:-28px 0 32px #040708,28px 0 32px #040708}
+.j1-clean .new-project-note p{font-family:'HighCruiser',Arial,sans-serif;font-weight:400;font-size:clamp(14px,1.3vw,17px);line-height:1.7;text-align:center;color:#e1e7da;text-shadow:0 1px 4px #000}
+@media(max-width:600px){#new .new-entry-copy h1{letter-spacing:-2.5px}.j1-clean .j1-profile:after{background:linear-gradient(0deg,#040708,transparent 60%)}.j1-clean .new-project-note{padding:12px 24px 28px;box-shadow:0 -24px 30px #040708,0 24px 30px #040708}.j1-clean .new-project-note p{font-size:15px}}
