@@ -1837,3 +1837,9 @@ main{display:block!important}
 .teasers>button>span>i{font-family:'Milligram Macro',Arial,sans-serif;font-weight:700;letter-spacing:.5px}
 .teaser-new-visual span{font-family:'Milligram Macro',Arial,sans-serif;font-weight:900}
 #works .object-menu button small{font-family:'Milligram Macro',Arial,sans-serif;font-weight:400}
+
+/* Explicit card typography; keep labels readable at every breakpoint. */
+#home .teasers>button>span,#home .teasers>button>span>b,#home .teasers>button>span>i{font-family:'Milligram Macro',Arial,sans-serif!important;font-synthesis:none}
+#home .teasers>button>span{font-weight:400!important;font-size:10px;line-height:1.5}
+#home .teasers>button>span>b{font-weight:900!important;font-size:13px;letter-spacing:.3px;line-height:1.2;margin-bottom:6px}
+#home .teasers>button>span>i{font-weight:700!important;font-size:9px}
