@@ -22,12 +22,12 @@ const objects = [
 ];
 let modelInitialized=false;
 function selectObject(index){
- const o=objects[index]; $('model').src=o[2]; $('model').alt=o[0]+' — '+o[1]; $('model-name').textContent=o[0]+' / '+o[1]; $('model-download').href=o[2]; $('model-status').textContent='LOADING OBJECT…';
+ const o=objects[index]; $('model').src=o[2]; $('model').alt=o[0]+' — '+o[1]; $('model-name').textContent=o[0]+' / '+o[1]; $('model-status').textContent='LOADING OBJECT…';
  document.querySelectorAll('.object-menu button').forEach((b,i)=>{b.classList.toggle('active',i===index);b.setAttribute('aria-pressed',String(i===index));});modelInitialized=true;
 }
 objects.forEach((o,i)=>{const b=document.createElement('button');b.innerHTML=`${String(i+1).padStart(2,'0')} / ${o[0]}<small>${o[1]}</small>`;b.onclick=()=>selectObject(i);$('object-menu').append(b);});
 $('model').addEventListener('load',()=>{$('model-status').textContent='DRAG TO ROTATE / SCROLL TO ZOOM';});
-$('model').addEventListener('error',()=>{$('model-status').textContent='Model niedostępny. Użyj DOWNLOAD .GLB.';});
+$('model').addEventListener('error',()=>{$('model-status').textContent='Model niedostępny. Spróbuj ponownie później.';});
 $('rotate').onclick=()=>{const m=$('model');const on=!m.hasAttribute('auto-rotate');m.toggleAttribute('auto-rotate',on);$('rotate').textContent='AUTO ROTATE / '+(on?'ON':'OFF');$('rotate').setAttribute('aria-pressed',String(on));};
 if(reduced.matches){$('model').removeAttribute('auto-rotate');$('rotate').textContent='AUTO ROTATE / OFF';$('rotate').setAttribute('aria-pressed','false');}
 function navigate(view){
