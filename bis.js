@@ -40,32 +40,38 @@ function navigate(view){
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{location.hash=b.dataset.view;});
 window.addEventListener('hashchange',()=>navigate(location.hash.slice(1)));navigate(location.hash.slice(1)||'home');
 const galleryPhotos=['IMG_0588.png','IMG_0586.png','IMG_0589.png','IMG_0587.png','IMG_0600.png','IMG_0545.JPG'];
-let galleryIndex=0;
-function selectGallery(index){
- galleryIndex=(index+galleryPhotos.length)%galleryPhotos.length;
- const image=$('gallery-image');
- image.src=galleryPhotos[galleryIndex];image.alt='Galeria — zdjęcie '+(galleryIndex+1);
- $('gallery-count').textContent=String(galleryIndex+1).padStart(2,'0')+' / '+String(galleryPhotos.length).padStart(2,'0');
- $('gallery-grid').querySelectorAll('button').forEach((button,i)=>button.setAttribute('aria-pressed',String(i===galleryIndex)));
-}
 galleryPhotos.forEach((src,i)=>{
- const b=document.createElement('button');b.className='archive-thumbnail';
- b.setAttribute('aria-label','Pokaż zdjęcie '+(i+1));b.setAttribute('aria-pressed',String(i===0));
- b.innerHTML=`<img src="${src}" alt="" loading="lazy"><span>${String(i+1).padStart(2,'0')}</span>`;
- b.onclick=()=>selectGallery(i);$('gallery-grid').append(b);
+ const button=document.createElement('button');
+ button.className='photo';button.dataset.image=src;
+ button.setAttribute('aria-label','Powiększ zdjęcie '+(i+1));
+ const img=document.createElement('img');img.src=src;img.alt='Galeria — zdjęcie '+(i+1);img.loading='lazy';
+ button.append(img);$('gallery-grid').append(button);
 });
-$('gallery-previous').onclick=()=>selectGallery(galleryIndex-1);
-$('gallery-next').onclick=()=>selectGallery(galleryIndex+1);
-function openGallery(){
- $('large-image').src=galleryPhotos[galleryIndex];$('large-image').alt=$('gallery-image').alt;
- $('image-caption').textContent=$('gallery-image').alt;$('lightbox').showModal();
-}
-$('gallery-open').onclick=openGallery;$('gallery-enlarge').onclick=openGallery;
-$('gallery').addEventListener('keydown',event=>{
- if(event.target.matches('input,textarea,select')||$('lightbox').open)return;
- if(event.key==='ArrowRight'||event.key==='ArrowLeft'){
-  event.preventDefault();selectGallery(galleryIndex+(event.key==='ArrowRight'?1:-1));
+// Only Gallery and Concept participate; new children inherit identical cropping.
+document.querySelectorAll('#gallery .fisheye-gallery,#concept .fisheye-gallery').forEach(strip=>{
+ function update(position){
+  const cards=[...strip.querySelectorAll(':scope > button')];
+  cards.forEach((card,i)=>{
+   const distance=i-position,falloff=Math.max(0,1-Math.abs(distance)/2.4);
+   card.style.setProperty('--depth',String(reduced.matches?0:falloff*115)+'px');
+   card.style.setProperty('--tilt',String(reduced.matches?0:distance*falloff*24)+'deg');
+   card.style.setProperty('--lift',String(reduced.matches?0:-falloff*10)+'px');
+   card.style.setProperty('--light',String(.65+falloff*.35));
+  });
  }
+ strip.addEventListener('pointermove',event=>{
+  if(event.pointerType==='touch')return;
+  const cards=[...strip.querySelectorAll(':scope > button')];
+  const centers=cards.map(card=>card.offsetLeft+card.offsetWidth/2);
+  const x=event.clientX-strip.getBoundingClientRect().left+strip.scrollLeft;
+  const step=centers.length>1?centers[1]-centers[0]:1;
+  update((x-centers[0])/step);
+ });
+ strip.addEventListener('pointerleave',()=>update(-10));
+ strip.addEventListener('focusin',event=>{const card=event.target.closest('button');if(card)update([...strip.children].indexOf(card));});
+ strip.addEventListener('focusout',event=>{if(!strip.contains(event.relatedTarget))update(-10);});
+ new MutationObserver(()=>update(-10)).observe(strip,{childList:true});
+ update(-10);
 });
 document.querySelectorAll('[data-image]').forEach(b=>b.onclick=()=>{$('large-image').src=b.dataset.image;$('large-image').alt=b.querySelector('img').alt;$('image-caption').textContent=$('large-image').alt;$('lightbox').showModal();});
 $('close-lightbox').onclick=()=>$('lightbox').close();$('lightbox').addEventListener('click',e=>{if(e.target===$('lightbox'))$('lightbox').close();});

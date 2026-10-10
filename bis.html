@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>JAY BLAZE</title><link rel="icon" href="janko.ico">
-<link rel="stylesheet" href="bis.css?v=j1-description-full-digits">
+<link rel="stylesheet" href="bis.css?v=neutro-gallery-1">
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-<script defer src="bis.js"></script>
+<script defer src="bis.js?v=fisheye-1"></script>
 </head>
 <body>
 <div class="shell">
@@ -100,29 +100,13 @@
 
         <section id="concept" class="view" hidden>
           <div class="view-heading"><h1>CONCEPT<br><em>FILES.</em></h1><p>Pomysły, formy i wizualne eksperymenty.</p></div>
-          <div class="concept-grid">
-            <button class="photo" data-image="IMG_2693.png"><img src="IMG_2693.png" alt="Concept work — projekt 01" loading="lazy"><span>CONCEPT / 001 ↗</span></button>
-            <button class="photo" data-image="IMG_1819.png"><img src="IMG_1819.png" alt="Concept work — projekt 02" loading="lazy"><span>CONCEPT / 002 ↗</span></button>
+          <div class="fisheye-gallery concept-grid">
+            <button class="photo" data-image="IMG_2693.png"><img src="IMG_2693.png" alt="Concept work — projekt 01" loading="lazy"></button>
+            <button class="photo" data-image="IMG_1819.png"><img src="IMG_1819.png" alt="Concept work — projekt 02" loading="lazy"></button>
           </div>
         </section>
 
-        <section id="gallery" class="view" hidden>
-          <div class="archive-gallery">
-            <div class="archive-heading"><h1>GALLERY</h1><span id="gallery-count" aria-live="polite">01 / 06</span></div>
-            <div class="archive-projector">
-              <button id="gallery-open" class="archive-frame" aria-label="Otwórz zdjęcie w pełnym rozmiarze">
-                <img id="gallery-image" src="IMG_0588.png" alt="Galeria — zdjęcie 1" width="1600" height="900">
-                <span class="scanlines" aria-hidden="true"></span>
-              </button>
-            </div>
-            <div class="archive-controls">
-              <button id="gallery-previous" aria-label="Poprzednie zdjęcie">← PREVIOUS</button>
-              <button id="gallery-enlarge">VIEW FULL SIZE ↗</button>
-              <button id="gallery-next" aria-label="Następne zdjęcie">NEXT →</button>
-            </div>
-            <div id="gallery-grid" class="archive-contact-sheet" role="group" aria-label="Wybierz zdjęcie"></div>
-          </div>
-        </section>
+        <section id="gallery" class="view" hidden><div class="view-heading"><h1><em>GALLERY</em></h1></div><div id="gallery-grid" class="fisheye-gallery" role="group" aria-label="Galeria zdjęć"></div></section>
 
         <section id="contact" class="view" hidden>
           <div class="view-heading"><h1>MAKE<br><em>CONTACT.</em></h1><p>Projekty, współpraca, pytania o części.</p></div>
@@ -140,7 +124,7 @@
               <button class="machine-spec-image" data-image="img/machine/front.jpg?v=edited-2" aria-label="Powiększ zdjęcie Nissana 200SX S13"><img src="img/machine/front.jpg?v=edited-2" alt="Nissan 200SX S13" width="1672" height="941" loading="lazy"></button>
               <div class="feature-grid" aria-hidden="true"></div>
               <div class="scanlines" aria-hidden="true"></div>
-              <div class="machine-spec-identity"><h1>NISSAN<br><em>200SX S13.</em></h1></div>
+              <div class="machine-spec-identity"><h1>RPS13</h1></div>
             </div>
             <div class="machine-spec-heading"><h2>SPEC SHEET</h2></div>
             <div class="machine-spec-grid">
@@ -173,9 +157,10 @@
                 <button id="next" aria-label="Następny utwór">≫</button>
               </div>
               <button id="visual-mode" aria-pressed="false" aria-label="Zmień tryb wyświetlacza">DISP</button>
+<label class="receiver-volume">VOL <input id="volume" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="Głośność"></label>
             </div>
           </div>
-          <div class="receiver-bottom"><label>VOL <input id="volume" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="Głośność"></label></div>
+          
         </div>
         <audio id="audio" autoplay preload="auto"></audio>
       </section>

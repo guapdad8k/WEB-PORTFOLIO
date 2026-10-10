@@ -1857,3 +1857,51 @@ nav button,#home .teasers>button>span,#home .teasers>button>span>b,#home .teaser
 /* Use text-friendly proportions for the longer J-1 description. */
 #new .j1-clean .new-project-note p{font-family:Arial,Helvetica,sans-serif;font-weight:400;font-synthesis:none;font-size:clamp(13px,1.15vw,15px);line-height:1.8;letter-spacing:.1px;overflow-wrap:break-word}
 @media(max-width:600px){#new .j1-clean .new-project-note p{font-size:14px;line-height:1.75}}
+
+@font-face{font-family:'Neutro';src:url('fonts/neutro-extrabold.otf') format('opentype');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Neutro Outline';src:url('fonts/neutro-outline.otf') format('opentype');font-weight:800;font-style:normal;font-display:swap}
+.view h1,#new .new-entry-copy h1,#gallery .view-heading h1{
+ font-family:'Neutro',Arial,sans-serif!important;font-weight:800!important;font-synthesis:none;letter-spacing:-.025em!important;line-height:1.05!important;
+}
+.view h1 em,#new .new-entry-copy h1 em{font-family:'Neutro Outline','Neutro',Arial,sans-serif!important;font-weight:800!important}
+.machine-spec-identity h1{font-style:normal;font-size:clamp(44px,7vw,84px)}
+/* Scoped square crops: originals remain intact in the lightbox. */
+#gallery .fisheye-gallery,#concept .fisheye-gallery{
+ display:flex;align-items:center;gap:14px;perspective:1100px;
+ overflow-x:auto;overflow-y:hidden;padding:90px 38px 100px;
+ min-height:380px;scroll-snap-type:x proximity;overscroll-behavior-x:contain;
+ background:radial-gradient(ellipse at 50% 50%,#243331 0%,#101819 55%,#060b0c 100%);
+ scrollbar-width:thin;scrollbar-color:#63746a #101819;
+}
+#gallery .fisheye-gallery>button,#concept .fisheye-gallery>button{
+ flex:0 0 clamp(150px,20vw,240px);aspect-ratio:1;min-width:0;
+ position:relative;padding:0;border:1px solid #63746a55;background:#030707;
+ overflow:hidden;scroll-snap-align:center;transform-style:preserve-3d;
+ transform:translateY(var(--lift,0px)) translateZ(var(--depth,0px)) rotateY(var(--tilt,0deg));
+ filter:brightness(var(--light,1));transition:transform .22s ease,filter .22s ease;
+ box-shadow:0 16px 25px #0007;cursor:pointer;
+}
+#gallery .fisheye-gallery img,#concept .fisheye-gallery img{
+ display:block;width:100%;height:100%;aspect-ratio:1;object-fit:cover;object-position:50% 50%;
+ filter:sepia(.4) saturate(.65);transition:filter .3s;
+}
+#gallery .fisheye-gallery button:hover img,#concept .fisheye-gallery button:hover img,
+#gallery .fisheye-gallery button:focus-visible img,#concept .fisheye-gallery button:focus-visible img{filter:none}
+.fisheye-gallery button:focus-visible{outline:2px solid #d5e2cd;outline-offset:4px}
+#concept .fisheye-gallery{justify-content:center}
+/* Slim volume control directly beneath the transport controls. */
+.carrozzeria.transport{padding-bottom:9px}
+.receiver-selector .receiver-volume{display:flex;align-items:center;gap:5px;margin:0;color:#53be9a;font:7px monospace}
+.carrozzeria #volume{appearance:none;-webkit-appearance:none;display:block;width:62px;height:12px;min-height:0;padding:0;margin:0;border:0;background:transparent;cursor:pointer}
+.carrozzeria #volume::-webkit-slider-runnable-track{height:2px;background:#315b4c;border-radius:2px}
+.carrozzeria #volume::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:8px;height:8px;margin-top:-3px;border-radius:50%;background:#65eabd;border:0}
+.carrozzeria #volume::-moz-range-track{height:2px;background:#315b4c;border:0}
+.carrozzeria #volume::-moz-range-thumb{width:8px;height:8px;border-radius:50%;background:#65eabd;border:0}
+.lower{padding-top:26px;background:linear-gradient(180deg,#202d2c 0%,#172222 18%,#0b1314 55%,#020505 100%);border-top:1px solid #73847855}
+.lower:before{top:0;height:1px;background:linear-gradient(90deg,transparent,#b6c6af66 25%,#b6c6af66 75%,transparent)}
+@media(max-width:600px){
+ #gallery .fisheye-gallery,#concept .fisheye-gallery{padding:48px 24px 58px;min-height:280px;gap:12px;justify-content:flex-start}
+ #gallery .fisheye-gallery>button,#concept .fisheye-gallery>button{flex-basis:180px}
+ .lower{padding-top:22px}
+}
+@media(prefers-reduced-motion:reduce){#gallery .fisheye-gallery>button,#concept .fisheye-gallery>button{transform:none;transition:none}#gallery .fisheye-gallery img,#concept .fisheye-gallery img{transition:none}}
